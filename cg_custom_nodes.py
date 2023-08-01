@@ -89,10 +89,12 @@ NODE_CLASS_MAPPINGS = {
     "Divide": Divide,
     "Concat": Concat,
     "FloatToString": FloatToString,
+    "RandomFloats": RandomFloats,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Divide": "Divide",
     "Concat": "Concat",
     "FloatToString": "FloatToString",
+    "RandomFloats": "RandomFloats",
 }
