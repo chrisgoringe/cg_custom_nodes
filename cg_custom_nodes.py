@@ -96,25 +96,29 @@ class ImageSize:
     
     def image_size(self, image:torch.Tensor):
         print(image.shape)
-        return (0,0,)
+        return (image.shape[2],image.shape[1],)
 
     RETURN_TYPES = ("INT","INT",)
     RETURN_NAMES = ("width","height",)
     FUNCTION = "image_size"
     CATEGORY = "CG"        
 
-NODE_CLASS_MAPPINGS = {
-    "Divide": Divide,
-    "Concat": Concat,
-    "FloatToString": FloatToString,
-    "RandomFloats": RandomFloats,
-    "ImageSize": ImageSize,
-}
+classes = [ "Divide","Concat","FloatToString","RandomFloats","ImageSize",]
 
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "Divide": "Divide",
-    "Concat": "Concat",
-    "FloatToString": "FloatToString",
-    "RandomFloats": "RandomFloats",
-    "ImageSize": "ImageSize",
-}
+NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
+NODE_DISPLAY_NAME_MAPPINGS = { c:c for c in classes }
+#NODE_CLASS_MAPPINGS = {
+##    "Divide": Divide,
+ #   "Concat": Concat,
+ #   "FloatToString": FloatToString,
+ #   "RandomFloats": RandomFloats,
+ #   "ImageSize": ImageSize,
+#}
+
+#NODE_DISPLAY_NAME_MAPPINGS = {
+#    "Divide": "Divide",
+#    "Concat": "Concat",
+#    "FloatToString": "FloatToString",
+#    "RandomFloats": "RandomFloats",
+#    "ImageSize": "ImageSize",
+#}
