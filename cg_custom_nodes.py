@@ -1,4 +1,5 @@
 import random
+import torch
 
 class Divide:
     def __init__(self):
@@ -84,12 +85,30 @@ class RandomFloats:
         rands = [random.uniform(minimum, maximum) for _ in range(3)]
         random.setstate(state=state)
         return rands
+    
+class ImageSize:
+    def __init__(self):
+        pass
+
+    @classmethod    
+    def INPUT_TYPES(s):
+        return { "required": { "image": ("IMAGE",), }, }
+    
+    def image_size(self, image:torch.Tensor):
+        print(image.shape)
+        return (0,0,)
+
+    RETURN_TYPES = ("INT","INT",)
+    RETURN_NAMES = ("width","height",)
+    FUNCTION = "image_size"
+    CATEGORY = "CG"        
 
 NODE_CLASS_MAPPINGS = {
     "Divide": Divide,
     "Concat": Concat,
     "FloatToString": FloatToString,
     "RandomFloats": RandomFloats,
+    "ImageSize": ImageSize,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -97,4 +116,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "Concat": "Concat",
     "FloatToString": "FloatToString",
     "RandomFloats": "RandomFloats",
+    "ImageSize": "ImageSize",
 }
