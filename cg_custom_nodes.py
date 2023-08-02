@@ -61,7 +61,7 @@ class XToString:
                     "string": ("STRING", {})
                  }}
     
-    def x2s(self, prefix, postfix, int, float, string):
+    def x2s(self, prefix, postfix, int=None, float=None, string=None):
         return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
 
 class RandomFloats:
