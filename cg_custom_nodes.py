@@ -43,23 +43,28 @@ class Concat:
     def concat(self, s1, s2, sep):
         return (f"{s1}{sep}{s2}",)
     
-class FloatToString:
+class ToString:
     def __init__(self):
         pass
 
     @classmethod    
     def INPUT_TYPES(s):
         return {
-            "required": { "float": ("FLOAT", {"default": 0.0}), }
+            "optional": { 
+                "float": ("FLOAT",), 
+                "int": ("INT",),
+            }
         }
 
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
-    FUNCTION = "f2s"
+    FUNCTION = "x2s"
     CATEGORY = "CG"
 
-    def f2s(self, float):
-        return (f"{float}",)   
+    def x2s(self, float, int):
+        float = float or ""
+        int = int or ""
+        return (f"{float}{int}",)   
     
 class RandomFloats:
     def __init__(self):
@@ -103,22 +108,4 @@ class ImageSize:
     FUNCTION = "image_size"
     CATEGORY = "CG"        
 
-classes = [ "Divide","Concat","FloatToString","RandomFloats","ImageSize",]
 
-NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
-NODE_DISPLAY_NAME_MAPPINGS = { c:c for c in classes }
-#NODE_CLASS_MAPPINGS = {
-##    "Divide": Divide,
- #   "Concat": Concat,
- #   "FloatToString": FloatToString,
- #   "RandomFloats": RandomFloats,
- #   "ImageSize": ImageSize,
-#}
-
-#NODE_DISPLAY_NAME_MAPPINGS = {
-#    "Divide": "Divide",
-#    "Concat": "Concat",
-#    "FloatToString": "FloatToString",
-#    "RandomFloats": "RandomFloats",
-#    "ImageSize": "ImageSize",
-#}
