@@ -21,6 +21,22 @@ class Divide:
     def divide(self, width):
         return(width,int(1024*1024/width))
     
+class Fractions:
+    def __init__(self):
+        pass
+
+    @classmethod    
+    def INPUT_TYPES(s):
+        return {"required": { "value": ("INT", {"default": 1024}) }, }
+    
+    RETURN_TYPES = ("INT","INT","INT","INT","INT","INT","INT")
+    RETURN_NAMES = ("1/6","1/4","1/3","1/2","2/3","3/4","5/6")
+    FUNCTION = "fractions"
+    CATEGORY = "CG"
+
+    def fractions(self, value:int):
+        return(value/6,value/4,value/3,value/2,2*value/3,3*value/4,5*value/6)  
+    
 class Concat:
     def __init__(self):
         pass
