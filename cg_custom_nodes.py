@@ -50,6 +50,7 @@ class ToString:
     @classmethod    
     def INPUT_TYPES(s):
         return {
+            "required": {},
             "optional": { 
                 "float": ("FLOAT",), 
                 "int": ("INT",),
