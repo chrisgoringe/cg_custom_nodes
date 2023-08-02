@@ -47,25 +47,22 @@ class ToString:
     def __init__(self):
         pass
 
-    @classmethod    
-    def INPUT_TYPES(s):
-        return {
-            "required": {},
-            "optional": { 
-                "float": ("FLOAT",), 
-                "int": ("INT",),
-            }
-        }
-
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
     FUNCTION = "x2s"
     CATEGORY = "CG"
+    PP = { "prefix": ("STRING", {"default":""}), "postfix": ("STRING", {"default":""}), }
+    def x2s(self, input, prefix, postfix):
+        return (f"{prefix}{input}{postfix}",)   
 
-    def x2s(self, float, int):
-        float = float or ""
-        int = int or ""
-        return (f"{float}{int}",)   
+class IntToString(ToString):
+    @classmethod    
+    def INPUT_TYPES(s):
+        return { "required": { "input": ("INT", {"default": 0}), }+s.PP }
+class FloatToString(ToString):
+    @classmethod    
+    def INPUT_TYPES(s):
+        return { "required": { "input": ("FLOAT", {"default": 0.0}), }+s.PP }
     
 class RandomFloats:
     def __init__(self):
