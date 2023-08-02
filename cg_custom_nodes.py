@@ -52,8 +52,7 @@ class ToString:
     FUNCTION = "x2s"
     CATEGORY = "CG"
     PP = { "prefix": ("STRING", {"default":""}), "postfix": ("STRING", {"default":""}), }
-    def x2s(self, input, prefix, postfix):
-        return (f"{prefix}{input}{postfix}",)   
+
     
 class XToString(ToString):
     @classmethod    
@@ -71,6 +70,8 @@ class IntToString(ToString):
     @classmethod    
     def INPUT_TYPES(s):
         return { "required": { "input": ("INT", {"default": 0}), } | s.PP }
+    def x2s(self, input, prefix, postfix):
+        return (f"{prefix}{input}{postfix}",)   
 class FloatToString(ToString):
     @classmethod    
     def INPUT_TYPES(s):
