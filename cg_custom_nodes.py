@@ -54,6 +54,18 @@ class ToString:
     PP = { "prefix": ("STRING", {"default":""}), "postfix": ("STRING", {"default":""}), }
     def x2s(self, input, prefix, postfix):
         return (f"{prefix}{input}{postfix}",)   
+    
+class XToString(ToString):
+    @classmethod    
+    def INPUT_TYPES(s):
+        return { "required": s.PP,
+                 "optional": { 
+                    "int": ("INT", {"default":int("NaN")}), 
+                    "float": ("FLOAT", {"default":float("NaN")}),
+                    "string": ("STRING", {"default":""})
+                 }}
+    def x2s(self, prefix, postfix, int, float, string):
+        return (f"{prefix}{int or ''}{float or ''}{string}{postfix}",)  
 
 class IntToString(ToString):
     @classmethod    
@@ -104,6 +116,7 @@ class ImageSize:
     RETURN_TYPES = ("INT","INT",)
     RETURN_NAMES = ("width","height",)
     FUNCTION = "image_size"
-    CATEGORY = "CG"        
+    CATEGORY = "CG"    
+    OUTPUT_NODE = True    
 
 
