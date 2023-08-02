@@ -35,7 +35,7 @@ class Fractions:
     CATEGORY = "CG"
 
     def fractions(self, value:int):
-        return(0,value/6,value/4,value/3,value/2,2*value/3,3*value/4,5*value/6,value)  
+        return(0,value//6,value//4,value//3,value//2,2*value//3,3*value//4,5*value//6,value)  
     
 class Concat:
     def __init__(self):
