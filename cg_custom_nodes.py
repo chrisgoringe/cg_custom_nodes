@@ -29,13 +29,13 @@ class Fractions:
     def INPUT_TYPES(s):
         return {"required": { "value": ("INT", {"default": 1024}) }, }
     
-    RETURN_TYPES = ("INT","INT","INT","INT","INT","INT","INT")
-    RETURN_NAMES = ("1/6","1/4","1/3","1/2","2/3","3/4","5/6")
+    RETURN_TYPES = ("INT","INT","INT","INT","INT","INT","INT","INT","INT")
+    RETURN_NAMES = ("0","1/6","1/4","1/3","1/2","2/3","3/4","5/6","1")
     FUNCTION = "fractions"
     CATEGORY = "CG"
 
     def fractions(self, value:int):
-        return(value/6,value/4,value/3,value/2,2*value/3,3*value/4,5*value/6)  
+        return(0,value/6,value/4,value/3,value/2,2*value/3,3*value/4,5*value/6,value)  
     
 class Concat:
     def __init__(self):
