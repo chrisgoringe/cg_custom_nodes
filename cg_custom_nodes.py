@@ -1,5 +1,35 @@
 import random
 import torch
+from collections import namedtuple
+
+Pair = namedtuple('Pair', ['x', 'y'])
+
+class Base:
+    def __init__(self):
+        pass
+    CATEGORY = "CG"
+    FUNCTION = "func"
+    OPTIONAL = None
+    @classmethod    
+    def INPUT_TYPES(s):
+        types = {"required": s.REQUIRED}
+        if s.OPTIONAL:
+            types["optional"] = s.OPTIONAL
+        return types
+
+class CreateSize(Base):
+    REQUIRED = { "width": ("INT", {"default": 512}), "height": ("INT", {"default": 512}) }
+    RETURN_TYPES = (Pair,)
+    RETURN_NAMES = ("size",)
+    def func(self,width,height):
+        return Pair(width, height)
+
+class SplitSize(Base):
+    REQUIRED = { "size": (Pair, {}), }
+    RETURN_TYPES = ("INT","INT",)
+    RETURN_NAMES = ("width","height",)
+    def func(self,size):
+        return (size.x, size.y,)
 
 class Divide:
     def __init__(self):
@@ -7,11 +37,7 @@ class Divide:
 
     @classmethod    
     def INPUT_TYPES(s):
-        return {
-            "required": { 
-                "width": ("INT", {"default": 1024, "min": 640, "max": 1536, "step": 8}) 
-            },
-        }
+        return { "required": { "width": ("INT", {"default": 1024, "min": 640, "max": 1536, "step": 8}) }, }
     
     RETURN_TYPES = ("INT","INT")
     RETURN_NAMES = ("width","height")
@@ -21,20 +47,12 @@ class Divide:
     def divide(self, width):
         return(width,int(1024*1024/width))
     
-class Fractions:
-    def __init__(self):
-        pass
-
-    @classmethod    
-    def INPUT_TYPES(s):
-        return {"required": { "value": ("INT", {"default": 1024}) }, }
-    
+class Fractions(Base):
+    REQUIRED = { "value": ("INT", {"default": 1024}) } 
     RETURN_TYPES = ("INT","INT","INT","INT","INT","INT","INT","INT","INT")
     RETURN_NAMES = ("0","1/6","1/4","1/3","1/2","2/3","3/4","5/6","1")
-    FUNCTION = "fractions"
-    CATEGORY = "CG"
 
-    def fractions(self, value:int):
+    def func(self, value:int):
         return(0,value//6,value//4,value//3,value//2,2*value//3,3*value//4,5*value//6,value)  
     
 class Concat:
