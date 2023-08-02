@@ -60,12 +60,12 @@ class XToString(ToString):
     def INPUT_TYPES(s):
         return { "required": s.PP,
                  "optional": { 
-                    "int": ("INT", {"default":int("NaN")}), 
-                    "float": ("FLOAT", {"default":float("NaN")}),
-                    "string": ("STRING", {"default":""})
+                    "int": ("INT", {}), 
+                    "float": ("FLOAT", {}),
+                    "string": ("STRING", {})
                  }}
     def x2s(self, prefix, postfix, int, float, string):
-        return (f"{prefix}{int or ''}{float or ''}{string}{postfix}",)  
+        return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
 
 class IntToString(ToString):
     @classmethod    
