@@ -58,11 +58,11 @@ class ToString:
 class IntToString(ToString):
     @classmethod    
     def INPUT_TYPES(s):
-        return { "required": { "input": ("INT", {"default": 0}), }+s.PP }
+        return { "required": { "input": ("INT", {"default": 0}), } | s.PP }
 class FloatToString(ToString):
     @classmethod    
     def INPUT_TYPES(s):
-        return { "required": { "input": ("FLOAT", {"default": 0.0}), }+s.PP }
+        return { "required": { "input": ("FLOAT", {"default": 0.0}), } | s.PP }
     
 class RandomFloats:
     def __init__(self):
