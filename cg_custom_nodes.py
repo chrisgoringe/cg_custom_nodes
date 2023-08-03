@@ -38,8 +38,7 @@ class CommonSizes(Base):
     def func(self,size:str):
         print(size)
         print(size.split('x'))
-        print(int(x) for x in size.split('x'))
-        return (int(x) for x in size.split('x'))
+        return [int(x) for x in size.split('x')]
 
 class Divide(Base):
     REQUIRED = { "width": ("INT", {"default": 1024, "min": 640, "max": 1536, "step": 8}) }
