@@ -16,6 +16,7 @@ class Base:
         return types
     
 Pair = namedtuple('Pair', ['x', 'y'])
+Region = namedtuple('Region', ['x','y','width','height'])
 
 class CreatePair(Base):
     REQUIRED = { "x or width": ("INT", {"default": 512}), "y or height": ("INT", {"default": 512}) }
@@ -112,3 +113,13 @@ class ImageSize(Base):
     def func(self, image:torch.Tensor):
         print(image.shape)
         return (image.shape[2],image.shape[1],)
+    
+class CompareImages(Base):
+    REQUIRED = { "image1": ("IMAGE",), "image2": ("IMAGE",), }
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("diff",)
+
+    def func(self, image1:torch.Tensor, image2:torch.Tensor):
+        diff = torch.abs(image1-image2)   # (batch,height,width,3)
+        mean = torch.mean(diff,3)         # (batch,height,width)
+        return torch.stack([mean for _ in range(3)],3)
