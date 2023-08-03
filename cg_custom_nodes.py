@@ -120,6 +120,11 @@ class CompareImages(Base):
     RETURN_NAMES = ("diff",)
 
     def func(self, image1:torch.Tensor, image2:torch.Tensor):
-        diff = torch.abs(image1-image2)   # (batch,height,width,3)
-        mean = torch.mean(diff,3)         # (batch,height,width)
-        return torch.stack([mean for _ in range(3)],3)
+        print(image1.shape)
+        diff = torch.abs(image1-image2)
+        print(diff.shape)
+        mean = torch.mean(diff,3)
+        print(mean.shape)
+        result = torch.stack([mean for _ in range(3)],3)
+        print(result.shape)
+        return result
