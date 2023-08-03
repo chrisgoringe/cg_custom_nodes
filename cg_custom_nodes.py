@@ -36,6 +36,9 @@ class CommonSizes(Base):
     RETURN_TYPES = ("PAIR","INT","INT")
     RETURN_NAMES = ("size","width","height")
     def func(self,size:str):
+        print(size)
+        print(size.split('x'))
+        print(int(x) for x in size.split('x'))
         return (int(x) for x in size.split('x'))
 
 class Divide(Base):
