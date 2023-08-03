@@ -117,10 +117,10 @@ class ImageSize(Base):
 class CompareImages(Base):
     REQUIRED = { "image1": ("IMAGE",), "image2": ("IMAGE",), }
     RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("diff",)
+    RETURN_NAMES = ("i1,i2,diff",)
 
     def func(self, image1:torch.Tensor, image2:torch.Tensor):
         diff = torch.abs(image1-image2)
         mean = torch.mean(diff,3)
         result = torch.stack([mean for _ in range(3)],3)
-        return (result,)
+        return (torch.cat(image1,image2,result),0)
