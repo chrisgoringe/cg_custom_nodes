@@ -75,6 +75,18 @@ class XToString(Base):
     RETURN_NAMES = ("string",)
     def func(self, prefix, postfix, int=None, float=None, string=None):
         return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
+    
+class Loggit(Base):
+    REQUIRED = { "prefix": ("STRING", {"default":""}), }
+    OPTIONAL = { 
+                    "int": ("INT", {}), 
+                    "float": ("FLOAT", {}),
+                    "string": ("STRING", {})
+                 }
+    RETURN_TYPES = ()
+    def func(self, prefix, int=None, float=None, string=None):
+        print (f"{prefix}{int or ''}{float or ''}{string or ''}")
+        return ()   
 
 class RandomFloats(Base):
     REQUIRED = { 
