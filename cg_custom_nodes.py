@@ -32,7 +32,7 @@ class SplitPair(Base):
         return (size.x, size.y,)
     
 class CommonSizes(Base):
-    REQUIRED = { "size": ("512x512", "512x768", "512x1014") }
+    REQUIRED = { "size": (("512x512", "512x768", "512x1014"), {}) }
     RETURN_TYPES = ("PAIR","INT","INT")
     RETURN_NAMES = ("size","width","height")
     def func(self,size:str):
