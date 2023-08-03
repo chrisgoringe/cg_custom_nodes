@@ -84,6 +84,7 @@ class Loggit(Base):
                     "string": ("STRING", {})
                  }
     RETURN_TYPES = ()
+    OUTPUT_NODE = True
     def func(self, prefix, int=None, float=None, string=None):
         print (f"{prefix}{int or ''}{float or ''}{string or ''}")
         return ()   
