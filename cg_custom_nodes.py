@@ -15,10 +15,8 @@ class Base:
             types["optional"] = s.OPTIONAL
         return types
     
-'''
+
 Pair = namedtuple('Pair', ['x', 'y'])
-
-
 
 class CreateSize(Base):
     REQUIRED = { "width": ("INT", {"default": 512}), "height": ("INT", {"default": 512}) }
@@ -26,7 +24,7 @@ class CreateSize(Base):
     RETURN_NAMES = ("size",)
     def func(self,width,height):
         return Pair(width, height)
-
+'''
 class SplitSize(Base):
     REQUIRED = { "size": (Pair, {}), }
     RETURN_TYPES = ("INT","INT",)
