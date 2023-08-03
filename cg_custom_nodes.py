@@ -22,7 +22,7 @@ class CreatePair(Base):
     RETURN_TYPES = ("PAIR",)
     RETURN_NAMES = ("xy pair",)
     def func(self,width,height):
-        return Pair(width, height)
+        return (Pair(width, height),)
 
 class SplitPair(Base):
     REQUIRED = { "xy pair": ("PAIR", {}), }
@@ -36,9 +36,8 @@ class CommonSizes(Base):
     RETURN_TYPES = ("PAIR","INT","INT")
     RETURN_NAMES = ("size","width","height")
     def func(self,size:str):
-        print(size)
-        print(size.split('x'))
-        return [int(x) for x in size.split('x')]
+        x, y = [int(v) for v in size.split('x')]
+        return (Pair(x,y),x,y)
 
 class Divide(Base):
     REQUIRED = { "width": ("INT", {"default": 1024, "min": 640, "max": 1536, "step": 8}) }
