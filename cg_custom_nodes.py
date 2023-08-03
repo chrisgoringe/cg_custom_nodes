@@ -127,4 +127,4 @@ class CompareImages(Base):
         print(mean.shape)
         result = torch.stack([mean for _ in range(3)],3)
         print(result.shape)
-        return result
+        return image1
