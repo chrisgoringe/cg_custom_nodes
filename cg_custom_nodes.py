@@ -1,8 +1,6 @@
 import random
 import torch
 from collections import namedtuple
-'''
-Pair = namedtuple('Pair', ['x', 'y'])
 
 class Base:
     def __init__(self):
@@ -16,6 +14,11 @@ class Base:
         if s.OPTIONAL:
             types["optional"] = s.OPTIONAL
         return types
+    
+'''
+Pair = namedtuple('Pair', ['x', 'y'])
+
+
 
 class CreateSize(Base):
     REQUIRED = { "width": ("INT", {"default": 512}), "height": ("INT", {"default": 512}) }
