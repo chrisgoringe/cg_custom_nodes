@@ -1,7 +1,7 @@
 import random
 import torch
 from collections import namedtuple
-
+'''
 Pair = namedtuple('Pair', ['x', 'y'])
 
 class Base:
@@ -30,7 +30,7 @@ class SplitSize(Base):
     RETURN_NAMES = ("width","height",)
     def func(self,size):
         return (size.x, size.y,)
-
+'''
 class Divide:
     def __init__(self):
         pass
