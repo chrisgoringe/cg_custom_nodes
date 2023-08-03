@@ -20,18 +20,18 @@ Pair = namedtuple('Pair', ['x', 'y'])
 
 class CreateSize(Base):
     REQUIRED = { "width": ("INT", {"default": 512}), "height": ("INT", {"default": 512}) }
-    RETURN_TYPES = (Pair,)
+    RETURN_TYPES = ("PAIR",)
     RETURN_NAMES = ("size",)
     def func(self,width,height):
         return Pair(width, height)
-'''
+
 class SplitSize(Base):
-    REQUIRED = { "size": (Pair, {}), }
+    REQUIRED = { "size": ("PAIR", {}), }
     RETURN_TYPES = ("INT","INT",)
     RETURN_NAMES = ("width","height",)
     def func(self,size):
         return (size.x, size.y,)
-'''
+
 class Divide:
     def __init__(self):
         pass
