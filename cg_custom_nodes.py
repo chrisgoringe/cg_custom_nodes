@@ -120,7 +120,11 @@ class CompareImages(Base):
     RETURN_NAMES = ("i1,i2,diff","diff")
 
     def func(self, image1:torch.Tensor, image2:torch.Tensor):
+        count = image1.shape
         diff = torch.abs(image1-image2)
         mean = torch.mean(diff,3)
         result = torch.stack([mean for _ in range(3)],3)
-        return (torch.cat((image1,image2,result),0), result, )
+        combined = torch.cat((image1,image2,result),0)
+        if count==2:
+            combined = torch.cat([combined[i].unsqueeze(0) for i in (0,2,4,1,3,5)])
+        return (combined, result, )
