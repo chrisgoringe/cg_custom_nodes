@@ -19,18 +19,18 @@ Pair = namedtuple('Pair', ['x', 'y'])
 Region = namedtuple('Region', ['x','y','width','height'])
 
 class CreatePair(Base):
-    REQUIRED = { "x or width": ("INT", {"default": 512}), "y or height": ("INT", {"default": 512}) }
+    REQUIRED = { "x": ("INT", {"default": 512}), "y": ("INT", {"default": 512}) }
     RETURN_TYPES = ("PAIR",)
-    RETURN_NAMES = ("xy pair",)
-    def func(self,width,height):
-        return (Pair(width, height),)
+    RETURN_NAMES = ("pair",)
+    def func(self,x,y):
+        return (Pair(x, y),)
 
 class SplitPair(Base):
-    REQUIRED = { "xy pair": ("PAIR", {}), }
+    REQUIRED = { "pair": ("PAIR", {}), }
     RETURN_TYPES = ("INT","INT",)
     RETURN_NAMES = ("x or width","y or height",)
-    def func(self,size):
-        return (size.x, size.y,)
+    def func(self,pair):
+        return (pair.x, pair.y,)
     
 class CommonSizes(Base):
     REQUIRED = { "size": (("512x512", "512x768", "512x1014", "768x512", "768x768", "768x1024", "1024x512", "1024x768", "1024x1024"), {}) }
