@@ -127,7 +127,7 @@ class CompareImages(Base):
         combined = torch.cat((image1,image2,result),0)
         return (combined, result, )
 
-def mask_to_image(self, mask):
+def mask_to_image(mask):
     return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
 
 class HardMask(Base):
