@@ -139,6 +139,6 @@ class HardMask(Base):
     RETURN_TYPES = ("MASK","IMAGE",)
 
     def func(self, threshold, mask=None, image=None):
-        mask = mask or torch.mean(image,3)
+        mask = mask if mask is not None else torch.mean(image,3)
         m = torch.where(mask>threshold,1.0,0.0)
         return (m, mask_to_image(m),)
