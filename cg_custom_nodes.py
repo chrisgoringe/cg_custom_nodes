@@ -126,3 +126,19 @@ class CompareImages(Base):
         result = torch.stack([mean for _ in range(3)],3)
         combined = torch.cat((image1,image2,result),0)
         return (combined, result, )
+
+def mask_to_image(self, mask):
+    return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
+
+class HardMask(Base):
+    REQUIRED = { "threshold": ("FLOAT",{"default": 0.5, "min": 0.0, "max": 0.1}) }
+    OPTIONAL = {
+        "mask": ("MASK",),
+        "image": ("IMAGE",)
+    }
+    RETURN_TYPES = ("MASK","IMAGE",)
+
+    def func(self, threshold, mask=None, image=None):
+        mask = mask or torch.mean(image,3)
+        m = torch.where(mask>threshold,1.0,0.0)
+        return (m, mask_to_image(m),)
