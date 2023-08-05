@@ -131,7 +131,7 @@ def mask_to_image(self, mask):
     return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
 
 class HardMask(Base):
-    REQUIRED = { "threshold": ("FLOAT",{"default": 0.5, "min": 0.0, "max": 0.1}) }
+    REQUIRED = { "threshold": ("FLOAT",{"default": 0.5, "min": 0.0, "max": 1.0}) }
     OPTIONAL = {
         "mask": ("MASK",),
         "image": ("IMAGE",)
