@@ -1,6 +1,7 @@
 import random
 import torch
 from collections import namedtuple
+import math
 
 class Base:
     def __init__(self):
@@ -40,13 +41,6 @@ class CommonSizes(Base):
         x, y = [int(v) for v in size.split('x')]
         return (Pair(x,y),x,y)
 
-class Divide(Base):
-    REQUIRED = { "width": ("INT", {"default": 1024, "min": 640, "max": 1536, "step": 8}) }
-    RETURN_TYPES = ("INT","INT")
-    RETURN_NAMES = ("width","height")
-    def func(self, width):
-        return(width,int(1024*1024/width))
-    
 class Fractions(Base):
     REQUIRED = { "value": ("INT", {"default": 1024}) } 
     RETURN_TYPES = ("INT","INT","INT","INT","INT","INT","INT","INT","INT")
@@ -142,3 +136,30 @@ class HardMask(Base):
         mask = mask if mask is not None else torch.mean(image,3)
         m = torch.where(mask>threshold,1.0,0.0)
         return (m, mask_to_image(m),)
+
+class ResizeImage(Base):
+    REQUIRED = { "image": ("IMAGE",) }
+    OPTIONAL = {
+        "max_dimension": ("INT", {}),
+        "multiple_of": ("INT", {"default":8})
+    }
+    RETURN_TYPES = ("IMAGE",)
+    def func(self, image, max_dimension=None, multiple_of=None):
+        b,h,w = image.shape[0:2]
+
+        too_big_by = max(h/max_dimension, w/max_dimension, 1.0) if max_dimension else 1.0
+        new_h = math.floor(h/too_big_by)
+        new_w = math.floor(w/too_big_by)
+
+        if multiple_of:
+            new_h = math.floor(new_h/multiple_of) * multiple_of
+            new_w = math.floor(new_w/multiple_of) * multiple_of
+
+        if (h==new_h and w==new_w):
+            return (image,)
+        
+        permed = torch.permute(image,(0, 3, 1, 2))
+        scaled = torch.nn.functional.interpolate(permed, size=(new_h, new_w))
+        return (torch.permute(scaled, (0, 2, 3, 1)),)
+        
+    
