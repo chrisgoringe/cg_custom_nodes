@@ -72,7 +72,7 @@ class XToString(Base):
         return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
 
 class Stringify(Base):
-    REQUIRED = { "input": ("*", {}), }
+    REQUIRED = { "input": ("*", ), }
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
     def func(self, input):
