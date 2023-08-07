@@ -72,11 +72,11 @@ class XToString(Base):
         return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
 
 class Stringify(Base):
-    REQUIRED = { "input": ("*", ), }
+    REQUIRED = { "in_thing": ("*", {}), }
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
-    def func(self, input):
-        return (f"{input}",)  
+    def func(self, in_thing):
+        return (f"{in_thing}",)  
     
 class Loggit(Base):
     REQUIRED = { "prefix": ("STRING", {"default":""}), }
