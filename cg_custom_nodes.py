@@ -66,8 +66,8 @@ class Stringify(Base):
 class Loggit(Stringify):
     RETURN_TYPES = ()
     OUTPUT_NODE = True
-    def func(self, *args):
-        print (super().func(args)[0])
+    def func(self, **kwargs):
+        print (super().func(kwargs)[0])
         return ()
 
 class RandomFloats(Base):
