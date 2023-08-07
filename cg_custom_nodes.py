@@ -142,10 +142,10 @@ class ResizeImage(Base):
         "image": ("IMAGE",) ,
         "x8": (["Yes", "No"],)
     }
-    OPTIONAL = { "max_dimension": ("INT", {"forceInput": True}),  }
+    OPTIONAL = { "max_dimension": ("INT", {"default": 0}),  }
     RETURN_TYPES = ("IMAGE",)
 
-    def func(self, image:torch.tensor, x8:str, max_dimension:int=None):
+    def func(self, image:torch.tensor, x8:str, max_dimension:int=0):
         b,h,w = image.shape[0:3]
 
         too_big_by = max(h/max_dimension, w/max_dimension, 1.0) if max_dimension else 1.0
