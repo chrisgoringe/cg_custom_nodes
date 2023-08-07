@@ -48,6 +48,13 @@ class Fractions(Base):
     def func(self, value:int):
         return(0,value//6,value//4,value//3,value//2,2*value//3,3*value//4,5*value//6,value)  
 
+class String(Base):
+    REQUIRED = {"string": ("STRING", {"default":""})}
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("string",)
+    def func(self, string):
+        return (string,)
+    
 class Stringify(Base):
     REQUIRED = { }
     OPTIONAL = { "anything": ("*", {}), "anything2": ("*", {}), "anything3": ("*", {}), "anything4": ("*", {}), }
