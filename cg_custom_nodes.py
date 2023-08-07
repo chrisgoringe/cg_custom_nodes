@@ -47,36 +47,14 @@ class Fractions(Base):
     RETURN_NAMES = ("0","1/6","1/4","1/3","1/2","2/3","3/4","5/6","1")
     def func(self, value:int):
         return(0,value//6,value//4,value//3,value//2,2*value//3,3*value//4,5*value//6,value)  
-    
-class Concat(Base):
-    REQUIRED = { 
-                "s1": ("STRING", {"default": "", "multiline": True}),
-                "s2": ("STRING", {"default": "", "multiline": True}), 
-                "sep": ("STRING", {"default": "", "multiline": False}), 
-            }
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("string",)
-    def func(self, s1, s2, sep):
-        return (f"{s1}{sep}{s2}",)
-
-class XToString(Base):
-    REQUIRED = { "prefix": ("STRING", {"default":""}), "postfix": ("STRING", {"default":""}), }
-    OPTIONAL = { 
-                    "int": ("INT", {}), 
-                    "float": ("FLOAT", {}),
-                    "string": ("STRING", {})
-                 }
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("string",)
-    def func(self, prefix, postfix, int=None, float=None, string=None):
-        return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
 
 class Stringify(Base):
-    REQUIRED = { "in_thing": ("*", {}), }
+    REQUIRED = { }
+    OPTIONAL = { "anything": ("*", {}), "anything2": ("*", {}), "anything3": ("*", {}), "anything4": ("*", {}), }
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
-    def func(self, in_thing):
-        return (f"{in_thing}",)  
+    def func(self, *args):
+        return "".join([(f"{s}" if s is not None else '') for s in args])
     
 class Loggit(Base):
     REQUIRED = { "prefix": ("STRING", {"default":""}), }
@@ -121,7 +99,6 @@ class CompareImages(Base):
     RETURN_NAMES = ("i1,i2,diff","diff")
 
     def func(self, image1:torch.Tensor, image2:torch.Tensor):
-        count = image1.shape[0]
         diff = torch.abs(image1-image2)
         mean = torch.mean(diff,3)
         result = torch.stack([mean for _ in range(3)],3)

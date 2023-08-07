@@ -1,6 +1,6 @@
 from .cg_custom_nodes import *
 
-classes = ["Concat","XToString","RandomFloats","ImageSize","Fractions",
+classes = ["RandomFloats","ImageSize","Fractions",
            "CreatePair","SplitPair","CommonSizes","Loggit","CompareImages",
            "HardMask", "ResizeImage", "Stringify" ]
 
