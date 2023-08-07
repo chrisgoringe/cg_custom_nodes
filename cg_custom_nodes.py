@@ -60,8 +60,8 @@ class Stringify(Base):
     OPTIONAL = { "anything": ("*", {}), "anything2": ("*", {}), "anything3": ("*", {}), "anything4": ("*", {}), }
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
-    def func(self, *args):
-        return ("".join([(f"{s}" if s is not None else '') for s in args]),)
+    def func(self, **kwargs):
+        return ("".join([(f"{kwargs[s]}") for s in kwargs]),)
     
 class Loggit(Stringify):
     RETURN_TYPES = ()
