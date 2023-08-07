@@ -54,20 +54,14 @@ class Stringify(Base):
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
     def func(self, *args):
-        return "".join([(f"{s}" if s is not None else '') for s in args])
+        return ("".join([(f"{s}" if s is not None else '') for s in args]),)
     
-class Loggit(Base):
-    REQUIRED = { "prefix": ("STRING", {"default":""}), }
-    OPTIONAL = { 
-                    "int": ("INT", {}), 
-                    "float": ("FLOAT", {}),
-                    "string": ("STRING", {})
-                 }
+class Loggit(Stringify):
     RETURN_TYPES = ()
     OUTPUT_NODE = True
-    def func(self, prefix, int=None, float=None, string=None):
-        print (f"{prefix}{int or ''}{float or ''}{string or ''}")
-        return ()   
+    def func(self, *args):
+        print super().func(args)[0]
+        return ()
 
 class RandomFloats(Base):
     REQUIRED = { 
