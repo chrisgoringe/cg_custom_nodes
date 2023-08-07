@@ -60,7 +60,7 @@ class Loggit(Stringify):
     RETURN_TYPES = ()
     OUTPUT_NODE = True
     def func(self, *args):
-        print super().func(args)[0]
+        print (super().func(args)[0])
         return ()
 
 class RandomFloats(Base):
