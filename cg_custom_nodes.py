@@ -58,7 +58,7 @@ class Concat(Base):
     RETURN_NAMES = ("string",)
     def func(self, s1, s2, sep):
         return (f"{s1}{sep}{s2}",)
-    
+
 class XToString(Base):
     REQUIRED = { "prefix": ("STRING", {"default":""}), "postfix": ("STRING", {"default":""}), }
     OPTIONAL = { 
@@ -70,6 +70,13 @@ class XToString(Base):
     RETURN_NAMES = ("string",)
     def func(self, prefix, postfix, int=None, float=None, string=None):
         return (f"{prefix}{int or ''}{float or ''}{string or ''}{postfix}",)  
+
+class Stringify(Base):
+    REQUIRED = { "input": ("*", {}), }
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("string",)
+    def func(self, input):
+        return (f"{input}",)  
     
 class Loggit(Base):
     REQUIRED = { "prefix": ("STRING", {"default":""}), }
