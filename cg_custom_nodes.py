@@ -138,22 +138,23 @@ class HardMask(Base):
         return (m, mask_to_image(m),)
 
 class ResizeImage(Base):
-    REQUIRED = { "image": ("IMAGE",) }
-    OPTIONAL = {
-        "max_dimension": ("INT", {}),
-        "multiple_of": ("INT", {"default":8})
+    REQUIRED = { 
+        "image": ("IMAGE",) ,
+        "x8": (["Yes", "No"],)
     }
+    OPTIONAL = { "max_dimension": ("INT", {"forceInput": True}),  }
     RETURN_TYPES = ("IMAGE",)
-    def func(self, image, max_dimension=None, multiple_of=None):
+
+    def func(self, image:torch.tensor, x8:str, max_dimension:int=None):
         b,h,w = image.shape[0:3]
 
         too_big_by = max(h/max_dimension, w/max_dimension, 1.0) if max_dimension else 1.0
         new_h = math.floor(h/too_big_by)
         new_w = math.floor(w/too_big_by)
 
-        if multiple_of:
-            new_h = math.floor(new_h/multiple_of) * multiple_of
-            new_w = math.floor(new_w/multiple_of) * multiple_of
+        if x8=="Yes":
+            new_h = ((4+new_h)//8) * 8
+            new_w = ((4+new_w)//8) * 8
 
         if (h==new_h and w==new_w):
             return (image,)
