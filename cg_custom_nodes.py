@@ -67,7 +67,7 @@ class Loggit(Stringify):
     RETURN_TYPES = ()
     OUTPUT_NODE = True
     def func(self, **kwargs):
-        print (super().func(kwargs)[0])
+        print ("".join([(f"{kwargs[s]}") for s in kwargs]))
         return ()
 
 class RandomFloats(Base):
