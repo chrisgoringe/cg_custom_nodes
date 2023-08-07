@@ -145,7 +145,7 @@ class ResizeImage(Base):
     }
     RETURN_TYPES = ("IMAGE",)
     def func(self, image, max_dimension=None, multiple_of=None):
-        b,h,w = image.shape[0:2]
+        b,h,w = image.shape[0:3]
 
         too_big_by = max(h/max_dimension, w/max_dimension, 1.0) if max_dimension else 1.0
         new_h = math.floor(h/too_big_by)
