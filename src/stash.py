@@ -5,20 +5,22 @@ import random
 class Stash(Base):
     stashed_items = {}
     CATEGORY = "CG/stash"
-    REQUIRED = { "image": ("IMAGE",), "id": ("STRING", { "default":"stash"} )}
+    REQUIRED = { "latent": ("LATENT",), "id": ("STRING", { "default":"stash"} ), "purge": (("yes", "no"), {})}
     RETURN_TYPES = ()
     RETURN_NAMES = ()
     OUTPUT_NODE = True
 
-    def func(self, image:torch.Tensor, id):
-        Stash.stashed_items[id] = (image.clone(), random.random())
+    def func(self, latent:torch.Tensor, id, purge):
+        if purge=="yes":
+            Stash.stashed_items = {}
+        Stash.stashed_items[id] = (latent.clone(), random.random())
         return ()
     
 class UnStash(Base):
     CATEGORY = "CG/stash"
     REQUIRED = { "id": ("STRING", { "default":"stash" } ), "initial": ("IMAGE",) }
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("image",)
+    RETURN_TYPES = ("LATENT",)
+    RETURN_NAMES = ("latent",)
     def func(self, id, initial:torch.Tensor):
         return (Stash.stashed_items[id][0] if id in Stash.stashed_items else initial ,)
     
