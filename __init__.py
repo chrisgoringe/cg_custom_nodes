@@ -9,7 +9,7 @@ from .src.stash import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
-           "CompareImages", "ImageSize", "HardMask", "ResizeImage", 
+           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "MergeLatents",
            "Loggit", "Stringify", "String", "Substitute",
            "Stash", "UnStash",
            ]

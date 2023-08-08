@@ -70,4 +70,14 @@ class ResizeImage(Base):
         scaled = torch.nn.functional.interpolate(permed, size=(new_h, new_w))
         return (torch.permute(scaled, (0, 2, 3, 1)),)
         
-    
+class MergeLatents(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { 
+        "latent1": ("LATENT",) ,
+        "latent1": ("LATENT",) ,
+        "mix": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.05})
+    }
+    RETURN_TYPES = ("LATENT",)
+
+    def func(self, latent1, latent2, mix):
+        return (latent1,)
