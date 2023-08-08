@@ -19,5 +19,4 @@ class UnStash(Base):
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("image",)
     def func(self, id, initial:torch.Tensor):
-        Stash.stashed_items[id] = image.clone()
         return (Stash.stashed_items[id] if id in Stash.stashed_items else initial ,)
