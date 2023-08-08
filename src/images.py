@@ -46,15 +46,18 @@ class ResizeImage(Base):
         "image": ("IMAGE",) ,
         "x8": (["Yes", "No"],)
     }
-    OPTIONAL = { "max_dimension": ("INT", {"default": 0}),  }
+    OPTIONAL = {
+        "factor": ("FLOAT", {"default":1.0, "min":0.0, "step":0.1 }),
+        "max_dimension": ("INT", {"default": 0, }),  
+    }
     RETURN_TYPES = ("IMAGE",)
 
-    def func(self, image:torch.tensor, x8:str, max_dimension:int=0):
+    def func(self, image:torch.tensor, x8:str, factor:float=1.0, max_dimension:int=0):
         h,w = image.shape[1:3]
 
-        too_big_by = max(h/max_dimension, w/max_dimension, 1.0) if max_dimension else 1.0
-        new_h = math.floor(h/too_big_by)
-        new_w = math.floor(w/too_big_by)
+        too_big_by = max(h*factor/max_dimension, w*factor/max_dimension, 1.0) if max_dimension else 1.0
+        new_h = math.floor(h*factor/too_big_by)
+        new_w = math.floor(w*factor/too_big_by)
 
         if x8=="Yes":
             new_h = ((4+new_h)//8) * 8
