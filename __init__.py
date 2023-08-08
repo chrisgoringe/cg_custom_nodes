@@ -5,11 +5,13 @@ from .src.sizes import *
 from .src.strings import *
 from .src.randoms import *
 from .src.images import *
+from .src.stash import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
            "CompareImages", "ImageSize", "HardMask", "ResizeImage", 
            "Loggit", "Stringify", "String", "Substitute",
+           "Stash", "UnStash",
            ]
 
 NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
