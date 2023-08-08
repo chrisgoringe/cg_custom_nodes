@@ -69,7 +69,8 @@ class ResizeImage(Base):
         permed = torch.permute(image,(0, 3, 1, 2))
         scaled = torch.nn.functional.interpolate(permed, size=(new_h, new_w))
         return (torch.permute(scaled, (0, 2, 3, 1)),)
-        
+
+
 class MergeLatents(Base):
     CATEGORY = "CG/images"
     REQUIRED = { 
@@ -79,5 +80,9 @@ class MergeLatents(Base):
     }
     RETURN_TYPES = ("LATENT",)
 
-    def func(self, latent1, latent2, mix):
-        return (latent1,)
+    def func(self, latent1:dict, latent2:dict, mix:float) -> tuple[dict]:
+        keys = set(latent1.keys) | set(latent2.keys)
+        def merge(a,b,f):
+            return (a*f + b*(1-f)) if a is not None and b is not None else a if a is not None else b
+        result = {key:merge(latent1.get(key,None), latent2.get(key,None, mix)) for key in keys}
+        return (result,)
