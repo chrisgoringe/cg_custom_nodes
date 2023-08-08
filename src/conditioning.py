@@ -12,10 +12,10 @@ class ReferenceOnly(Base):
 
     def func(self, model, reference, factor):
         model_reference = model.clone()
-        self.reference = reference
+        self.samples = reference["samples"]
 
         def reference_apply(q, k, v, extra_options):
-            k = self.reference.clone() * factor
+            k = self.samples.clone() * factor
             return q, k, k
 
         model_reference.set_model_attn1_patch(reference_apply)
