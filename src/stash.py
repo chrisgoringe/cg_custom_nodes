@@ -18,7 +18,7 @@ class Stash(Base):
     
 class UnStash(Base):
     CATEGORY = "CG/stash"
-    REQUIRED = { "id": ("STRING", { "default":"stash" } ), "initial": ("IMAGE",) }
+    REQUIRED = { "id": ("STRING", { "default":"stash" } ), "initial": ("LATENT",) }
     RETURN_TYPES = ("LATENT",)
     RETURN_NAMES = ("latent",)
     def func(self, id, initial:torch.Tensor):
