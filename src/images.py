@@ -40,6 +40,24 @@ class HardMask(Base):
         m = torch.where(mask>threshold,1.0,0.0)
         return (m, mask_to_image(m),)
 
+def resize(image, height, width):
+    permed = torch.permute(image,(0, 3, 1, 2))
+    scaled = torch.nn.functional.interpolate(permed, size=(height, width))
+    return torch.permute(scaled, (0, 2, 3, 1))
+
+class ExactResizeImage(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { 
+        "image": ("IMAGE",) ,
+        "width": ("INT", {"default": 512, "step":8}),  
+        "height": ("INT", {"default": 512, "step":8}),  
+    }
+    RETURN_TYPES = ("IMAGE",)
+
+    def func(self, image:torch.tensor, width:int, height:int):
+        h,w = image.shape[1:3]
+        return (image,) if (h==height and w==width) else (resize(image,height,width),)
+    
 class ResizeImage(Base):
     CATEGORY = "CG/images"
     REQUIRED = { 
@@ -56,19 +74,14 @@ class ResizeImage(Base):
         h,w = image.shape[1:3]
 
         too_big_by = max(h*factor/max_dimension, w*factor/max_dimension, 1.0) if max_dimension else 1.0
-        new_h = math.floor(h*factor/too_big_by)
-        new_w = math.floor(w*factor/too_big_by)
+        height = math.floor(h*factor/too_big_by)
+        width = math.floor(w*factor/too_big_by)
 
         if x8=="Yes":
-            new_h = ((4+new_h)//8) * 8
-            new_w = ((4+new_w)//8) * 8
-
-        if (h==new_h and w==new_w):
-            return (image,)
+            height = ((4+height)//8) * 8
+            width = ((4+width)//8) * 8
         
-        permed = torch.permute(image,(0, 3, 1, 2))
-        scaled = torch.nn.functional.interpolate(permed, size=(new_h, new_w))
-        return (torch.permute(scaled, (0, 2, 3, 1)),)
+        return (image,) if (h==height and w==width) else (resize(image,height,width),)
 
 
 class MergeLatents(Base):
