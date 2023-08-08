@@ -96,6 +96,6 @@ class MergeLatents(Base):
     def func(self, latent1:dict, latent2:dict, mix:float) -> tuple[dict]:
         keys = set(latent1.keys()) | set(latent2.keys())
         def merge(a,b,k,f):
-            return (a[k]*f + b[k]*(1-f)) if k in a and k in b else a[k] if a in a else b[k]
+            return (a[k]*(1-f) + b[k]*f) if k in a and k in b else a[k] if a in a else b[k]
         result = {key:merge(latent1, latent2, key, mix) for key in keys}
         return (result,)
