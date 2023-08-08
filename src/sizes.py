@@ -22,7 +22,8 @@ class SplitPair(Base):
     
 class CommonSizes(Base):
     CATEGORY = "CG/sizes"
-    REQUIRED = { "size": (("512x512", "512x768", "512x1024", "768x512", "768x768", "768x1024", "1024x512", "1024x768", "1024x1024"), {}) }
+    REQUIRED = { "size": (("512x512", "512x768", "512x1024", "768x512", "768x768", "768x1024", "1024x512", "1024x768", "1024x1024",
+                           "640x1536", "768x1344", "832x1216", "896x1152"), {}) }
     RETURN_TYPES = ("PAIR","INT","INT")
     RETURN_NAMES = ("size","width","height")
     def func(self,size:str):
