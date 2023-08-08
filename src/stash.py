@@ -1,14 +1,20 @@
-from src.base import Base
-import torch
 import random
 
-class Stash(Base):
+class Stash:
     stashed_items = {}
-    CATEGORY = "CG/stash"
-    REQUIRED = { "latent": ("LATENT",), "id": ("STRING", { "default":"stash"} ), "purge": (("yes", "no"), {})}
+
+    def __init__(self):
+        pass
+
+    @classmethod    
+    def INPUT_TYPES(s):
+        return {"required":  { "latent": ("LATENT",), "id": ("STRING", { "default":"stash"} ), "purge": (("yes", "no"), {})}}
+
     RETURN_TYPES = ()
     RETURN_NAMES = ()
     OUTPUT_NODE = True
+    CATEGORY = "CG/stash"
+    FUNCTION = "func"
 
     def func(self, latent, id, purge):
         if purge=="yes":
@@ -17,13 +23,21 @@ class Stash(Base):
         Stash.stashed_items[id] = ({x:latent[x] for x in latent}, random.random())
         return ()
     
-class UnStash(Base):
-    CATEGORY = "CG/stash"
-    REQUIRED = { "id": ("STRING", { "default":"stash" } ), "initial": ("LATENT",) }
+class UnStash:
+    def __init__(self):
+        pass
+
+    @classmethod    
+    def INPUT_TYPES(s):
+        return {"required": { "id": ("STRING", { "default":"stash" } ), "initial": ("LATENT",), "skip": (("no", "yes"), {})} } 
+
     RETURN_TYPES = ("LATENT",)
     RETURN_NAMES = ("latent",)
-    def func(self, id, initial:torch.Tensor):
-        return (Stash.stashed_items[id][0] if id in Stash.stashed_items else initial ,)
+    CATEGORY = "CG/stash"
+    FUNCTION = "func"
+
+    def func(self, id, initial, skip):
+        return (Stash.stashed_items[id][0] if (skip=="no" and id in Stash.stashed_items) else initial ,)
     
     @classmethod
     def IS_CHANGED(cls, id, **kwargs):
