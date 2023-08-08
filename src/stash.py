@@ -10,10 +10,11 @@ class Stash(Base):
     RETURN_NAMES = ()
     OUTPUT_NODE = True
 
-    def func(self, latent:torch.Tensor, id, purge):
+    def func(self, latent, id, purge):
         if purge=="yes":
             Stash.stashed_items = {}
-        Stash.stashed_items[id] = (latent.clone(), random.random())
+        
+        Stash.stashed_items[id] = ({x:latent[x] for x in latent}, random.random())
         return ()
     
 class UnStash(Base):
