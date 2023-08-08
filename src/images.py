@@ -74,7 +74,7 @@ class MergeLatents(Base):
     CATEGORY = "CG/images"
     REQUIRED = { 
         "latent1": ("LATENT",) ,
-        "latent1": ("LATENT",) ,
+        "latent2": ("LATENT",) ,
         "mix": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.05})
     }
     RETURN_TYPES = ("LATENT",)
