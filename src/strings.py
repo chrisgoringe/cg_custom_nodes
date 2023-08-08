@@ -28,7 +28,7 @@ class Loggit(Stringify):
 class Substitute(Base):
     CATEGORY = "CG/strings"
     REQUIRED = {"template": ("STRING", {"default":"", "multiline": True })}
-    OPTIONAL = { "X": ("String", {}), "Y": ("String", {}), "Z": ("String", {}), }
+    OPTIONAL = { "x": ("String", {}), "y": ("String", {}), "z": ("String", {}), }
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
     def func(self, template:str, x="", y="", z=""):
