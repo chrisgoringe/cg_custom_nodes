@@ -53,4 +53,4 @@ class UnStash:
             return (Stash.stashed_items[id][1],)
         elif (use=="previous" and id in Stash.previous):
             return (Stash.previous[id][1],)
-        return 0.0
+        return random.random()
