@@ -13,8 +13,8 @@ class MergeLatents(Base):
     def func(self, latent1:dict, latent2:dict, latent2weight:float):
         keys = set(latent1.keys()) | set(latent2.keys())
         def merge(a,b,k,f):
-            return (a[k]*(1-latent2weight) + b[k]*latent2weight) if k in a and k in b else a[k] if a in a else b[k]
-        result = {key:merge(latent1, latent2, key, mix) for key in keys}
+            return (a[k]*(1-f) + b[k]*f) if k in a and k in b else a[k] if a in a else b[k]
+        result = {key:merge(latent1, latent2, key, latent2weight) for key in keys}
         return (result, )
     
 class MergeLatentsSettings(Base):
