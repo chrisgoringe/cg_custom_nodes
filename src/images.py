@@ -84,23 +84,3 @@ class ResizeImage(Base):
         return (image,) if (h==height and w==width) else (resize(image,height,width),)
 
 
-class MergeLatents(Base):
-    CATEGORY = "CG/images"
-    REQUIRED = { 
-        "latent1": ("LATENT",) ,
-        "latent2": ("LATENT",) ,
-        "weight_latent1": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
-        "weight_latent2": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
-        "weight_prompt": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
-    }
-    RETURN_TYPES = ("LATENT","FLOAT",)
-    RETURN_NAMES = ("latent","denoise,")
-
-    def func(self, latent1:dict, latent2:dict, weight_latent1:float, weight_latent2:float, weight_prompt:float) -> tuple[dict]:
-        mix = weight_latent2 / (weight_latent1+weight_latent2) if (weight_latent1+weight_latent2)!=0 else 0.5
-        denoise = weight_prompt / (weight_prompt+weight_latent1+weight_latent2) if (weight_prompt+weight_latent1+weight_latent2) else 0.333
-        keys = set(latent1.keys()) | set(latent2.keys())
-        def merge(a,b,k,f):
-            return (a[k]*(1-f) + b[k]*f) if k in a and k in b else a[k] if a in a else b[k]
-        result = {key:merge(latent1, latent2, key, mix) for key in keys}
-        return (result, denoise or 1.0e-6,)

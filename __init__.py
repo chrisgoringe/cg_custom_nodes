@@ -6,10 +6,12 @@ from .src.strings import *
 from .src.randoms import *
 from .src.images import *
 from .src.stash import *
+from .src.latents import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
-           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeLatents",
+           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", 
+           "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute",
            "Stash", "UnStash",
            ]
