@@ -89,9 +89,9 @@ class MergeLatents(Base):
     REQUIRED = { 
         "latent1": ("LATENT",) ,
         "latent2": ("LATENT",) ,
-        "weight_latent1": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.05}),
-        "weight_latent2": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.05}),
-        "weight_prompt": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.05}),
+        "weight_latent1": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
+        "weight_latent2": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
+        "weight_prompt": ("FLOAT",{"default":0.33, "min":0.0, "max":1.0, "step":0.01}),
     }
     RETURN_TYPES = ("LATENT","FLOAT",)
     RETURN_NAMES = ("latent","denoise,")
@@ -103,4 +103,4 @@ class MergeLatents(Base):
         def merge(a,b,k,f):
             return (a[k]*(1-f) + b[k]*f) if k in a and k in b else a[k] if a in a else b[k]
         result = {key:merge(latent1, latent2, key, mix) for key in keys}
-        return (result,denoise,)
+        return (result, denoise or 1.0e-6,)
