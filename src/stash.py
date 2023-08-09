@@ -41,16 +41,16 @@ class UnStash:
     FUNCTION = "func"
 
     def func(self, id, initial, use):
-        if (use=="latest" and id in Stash.stashed_items):
+        if (use=="latest" and id in Stash.stashed_items and Stash.stashed_items[id] is not None):
             return (Stash.stashed_items[id][0],)
-        elif (use=="previous" and id in Stash.previous):
+        elif (use=="previous" and id in Stash.previous and Stash.previous[id] is not None):
             return (Stash.previous[id][0],)
         return (initial,)
     
     @classmethod
     def IS_CHANGED(cls, id, initial, use):
-        if (use=="latest" and id in Stash.stashed_items):
+        if (use=="latest" and id in Stash.stashed_items and Stash.stashed_items[id] is not None):
             return (Stash.stashed_items[id][1],)
-        elif (use=="previous" and id in Stash.previous):
+        elif (use=="previous" and id in Stash.previous and Stash.previous[id] is not None):
             return (Stash.previous[id][1],)
         return random.random()
