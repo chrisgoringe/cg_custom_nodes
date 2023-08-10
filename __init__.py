@@ -7,6 +7,7 @@ from .src.randoms import *
 from .src.images import *
 from .src.stash import *
 from .src.latents import *
+from .src.dev import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
@@ -14,6 +15,7 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
+           "InspectConditioning"
            ]
 
 NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
