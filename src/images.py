@@ -83,4 +83,15 @@ class ResizeImage(Base):
         
         return (image,) if (h==height and w==width) else (resize(image,height,width),)
 
+class MergeImages(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { 
+        "image1": ("IMAGE",) ,
+        "image2": ("IMAGE",) ,
+        "image2weight": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.01}),
+    }
+    RETURN_TYPES = ("IMAGE", )
+    RETURN_NAMES = ("image", )
 
+    def func(self, image1:torch.Tensor, image2:torch.Tensor, image2weight:float) -> torch.Tensor:
+        return (image1*(1-image2weight)+image2*image2weight, )

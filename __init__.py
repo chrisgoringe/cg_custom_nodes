@@ -10,7 +10,7 @@ from .src.latents import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
-           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", 
+           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeImages",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute",
            "Stash", "UnStash",
