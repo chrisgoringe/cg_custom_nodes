@@ -8,10 +8,10 @@ def mask_to_image(mask:torch.tensor):
 class ImageSize(Base):
     CATEGORY = "CG/images"
     REQUIRED = { "image": ("IMAGE",), }
-    RETURN_TYPES = ("INT","INT",)
-    RETURN_NAMES = ("width","height",)
+    RETURN_TYPES = ("INT","INT","INT","INT")
+    RETURN_NAMES = ("width","height","batch","channels")
     def func(self, image:torch.Tensor):
-        return (image.shape[2],image.shape[1],)
+        return (image.shape[2],image.shape[1],image.shape[0],image.shape[3])
     
 class CompareImages(Base):
     CATEGORY = "CG/images"
