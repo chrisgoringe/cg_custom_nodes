@@ -10,7 +10,7 @@ def inspect_factory(name:str, to_inspect:str, display_name:str=None):
     display_name = display_name or to_inspect
     clazz_contents = {
         "CATEGORY" : "CG/dev",
-        "REQUIRED" : { display_name: (to_inspect, {}) },
+        "REQUIRED" : { display_name: (to_inspect, {}), "log": (["yes","no"], {}) },
         "RETURN_TYPES" : (to_inspect,),
         "RETURN_NAMES" : (display_name,),
         "OUTPUT_NODE" : True,
