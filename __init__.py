@@ -12,7 +12,7 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
            "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeImages",
            "MergeLatents", "MergeLatentsSettings",
-           "Loggit", "Stringify", "String", "Substitute",
+           "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
            ]
 

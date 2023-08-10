@@ -25,6 +25,10 @@ class Loggit(Stringify):
         print ("".join([(f"{kwargs[s]}") for s in kwargs]))
         return ()
     
+class SimpleLog(Loggit):
+    REQUIRED = { "label": ("STRING", {"default":""}), "anything": ("*", {}) }
+    OPTIONAL = {}
+    
 class Substitute(Base):
     CATEGORY = "CG/strings"
     REQUIRED = {"template": ("STRING", {"default":"", "multiline": True })}
