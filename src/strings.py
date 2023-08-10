@@ -26,8 +26,8 @@ class Loggit(Stringify):
         return ()
     
 class SimpleLog(Loggit):
-    REQUIRED = { "label": ("STRING", {"default":""}), "anything": ("*", {}) }
-    OPTIONAL = {}
+    REQUIRED = { "label": ("STRING", {"default":""}) }
+    OPTIONAL = { "anything": ("*", {}) }
     
 class Substitute(Base):
     CATEGORY = "CG/strings"
