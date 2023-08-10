@@ -15,7 +15,7 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
-           "InspectConditioning", "InspectModel", "InspectVae", "InspectLatent", "InspectImage",
+           "InspectConditioning", "InspectModel", "InspectVae", "InspectLatent", "InspectImage", "InspectClip",
            ]
 
 NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
