@@ -1,7 +1,6 @@
 from src.base import Base
 
-def func(*args, **kwargs):
-    input, log = list(kwargs.values())
+def func(log, input):
     if log:
         print(f"{input}")                 
     return (input,) # This is a good place to put a breakpoint...
@@ -14,7 +13,7 @@ def inspect_factory(name:str, to_inspect:str, display_name:str=None):
         "RETURN_TYPES" : (to_inspect,),
         "RETURN_NAMES" : (display_name,),
         "OUTPUT_NODE" : True,
-        "func" : func
+        "func" : lambda *args, **kwargs : func(kwargs['log']=='yes', kwargs[display_name])
     }
     clazz = type(name,(Base,),clazz_contents)
     return clazz
