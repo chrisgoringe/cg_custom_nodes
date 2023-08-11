@@ -18,9 +18,9 @@ def inspect_factory(name:str, to_inspect:str, display_name:str=None):
     clazz = type(name,(Base,),clazz_contents)
     return clazz
 
-InspectConditioning = inspect_factory('InspectConditioning', 'CONDITIONING', 'Conditioning')
-InspectModel = inspect_factory('InspectModel', 'MODEL', 'Model')
-InspectVae = inspect_factory('InspectVae', 'VAE', 'VAE')
-InspectLatent = inspect_factory('InspectLatent', 'LATENT', 'Latent')
-InspectImage = inspect_factory('InspectImage', 'IMAGE', 'Image')
-InspectClip = inspect_factory('InspectClip', 'CLIP', 'Clip')
+
+Things = ["Clip", "Conditioning", "Float", "Image", "Int", "Latent", "Model", "String", "Vae", ]
+for Thing in Things:
+    globals()[f"Inspect{Thing}"] = inspect_factory(f"Inspect{Thing}", Thing.upper(), Thing)
+
+DEV_CLASSES = [f"Inspect{Thing}" for Thing in Things]
