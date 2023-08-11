@@ -15,7 +15,7 @@ For comparison - if you merge the images in pixel space instead of latent space 
 |------------|------------|
 |![Merged in pixel space 1](merged_latent_images/image_merge_1.png)|![Merged in pixel space 2](merged_latent_images/image_merge_2.png)|
 
-This is a workflow and some custom nodes to combine two images by merging them in latent space and then denoising. Drag and drop either of the merged images onto ComfyUI to get the workflow, or get the [JSON file](merged_latent_images/merge-latents-and-prompts-workflow.json). You will need [cg_custom_nodes](https://github.com/chrisgoringe/cg_custom_nodes), which support this and other interesting workflows.
+This is a workflow and some custom nodes to combine two images by merging them in latent space and then denoising. Drag and drop either of the "merged in latent space" images onto ComfyUI to get the workflow, or get the [JSON file](merged_latent_images/merge-latents-and-prompts-workflow.json). You will need [cg_custom_nodes](https://github.com/chrisgoringe/cg_custom_nodes), which support this and other interesting workflows.
 
 ![Workflow](merged_latent_images/workflow.png)
 
@@ -84,7 +84,7 @@ If the images are not the same size, or very large, or not multiples of 8 pixels
 - `CG > Images > ImageSize`
     - take an image and output its width and height (and colour depth, and batch size)
 - `CG > Images > ExactResizeImage`
-    - resize to a specific size. Using the outoput of ImageSize above, can be used to make sure two images are the same size.
+    - resize to a specific size. Using the output of ImageSize above, can be used to make sure two images are the same size.
 - `CG > Images > ResizeImage`
     - this one is useful for images which are really big or aren't a multiple of 8 pixels.
 </details>
