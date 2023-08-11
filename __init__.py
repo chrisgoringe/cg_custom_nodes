@@ -15,7 +15,8 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
-           ].extend(DEV_CLASSES)
+           ]
+classes.extend(DEV_CLASSES)
 
 NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
 NODE_DISPLAY_NAME_MAPPINGS = { c:c for c in classes }
