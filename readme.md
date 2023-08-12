@@ -18,5 +18,22 @@ git pull
 ```
 then restart your ComfyUI server.
 
-## 
+## Workflows
 
+- [Merge Latents](docs/merge_latents.md) - combine two images in latent space
+- Masks tools
+- Iterating with stash
+- Logging and other string tools
+- Comparing images
+- Unprompt
+- Randoms
+- Standard Sized
+- Development tools (can also be used like reroute, but typed and nestable)
+
+(docs to do)
+
+## Other documentation
+
+- [All the nodes](docs/all_nodes.md)
+- [Changelog](docs/change_log.md)
+- [Future possibilities](docs/)

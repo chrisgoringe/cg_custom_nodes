@@ -8,6 +8,7 @@ from .src.images import *
 from .src.stash import *
 from .src.latents import *
 from .src.dev import *
+from .src.img2txt import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
@@ -15,8 +16,9 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
-           "InspectConditioning", "InspectModel", "InspectVae", "InspectLatent", "InspectImage", "InspectClip",
+           "TextDescriptionOfImage",
            ]
+classes.extend(DEV_CLASSES)
 
 NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
 NODE_DISPLAY_NAME_MAPPINGS = { c:c for c in classes }
