@@ -8,6 +8,7 @@ from .src.images import *
 from .src.stash import *
 from .src.latents import *
 from .src.dev import *
+from .src.blip import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
@@ -15,6 +16,7 @@ classes = ["CreatePair","SplitPair","CommonSizes",
            "MergeLatents", "MergeLatentsSettings",
            "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
            "Stash", "UnStash",
+           "TextDescriptionOfImage",
            ]
 classes.extend(DEV_CLASSES)
 
