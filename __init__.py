@@ -8,7 +8,7 @@ from .src.images import *
 from .src.stash import *
 from .src.latents import *
 from .src.dev import *
-from .src.blip import *
+from .src.img2txt import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 

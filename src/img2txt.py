@@ -7,10 +7,10 @@ import torch
 from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
 from PIL import Image
-
+from folder_paths import models_dir
 
 BLIP_NODE_ROOT = os.path.dirname(os.path.abspath(__file__))
-X_DIR = os.getcwd() + os.sep + ".." + os.sep + ".." + os.sep + "models"
+sys.path.insert(0, BLIP_NODE_ROOT)
 
 # Tensor to PIL
 def tensor2pil(image):
@@ -42,7 +42,7 @@ class TextDescriptionOfImage(Base):
                  "min_length": ("INT", {"default":5, "min":0, "max":100}), 
                  "max_length": ("INT", {"default":20, "min":0, "max":100}) }
     RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("text")
+    RETURN_NAMES = ("text",)
     
     def func(self, image, min_length, max_length):
 # Change the current working directory to BLIP_NODE_ROOT
@@ -50,7 +50,7 @@ class TextDescriptionOfImage(Base):
         os.chdir(BLIP_NODE_ROOT)
 
         # Add BLIP_NODE_ROOT to the Python path
-        sys.path.insert(0, BLIP_NODE_ROOT)
+        #sys.path.insert(0, BLIP_NODE_ROOT)
 
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -59,7 +59,7 @@ class TextDescriptionOfImage(Base):
 
         tensor = transformImage(image, size, device)
 
-        blip_dir = os.path.join(X_DIR, "blip")
+        blip_dir = os.path.join(models_dir, "blip")
         if not os.path.exists(blip_dir):
             os.mkdir(blip_dir)
 
