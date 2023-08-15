@@ -9,14 +9,18 @@ from .src.stash import *
 from .src.latents import *
 from .src.dev import *
 from .src.img2txt import *
+from .src.grad import *
+from .src.conditioning import *
 
 classes = ["CreatePair","SplitPair","CommonSizes",
            "RandomFloats", 
            "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeImages",
            "MergeLatents", "MergeLatentsSettings",
-           "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
+           "MergeConditionings", 
+           "Loggit", "Stringify", "String", "Substitute", "SimpleLog", "Truncate",
            "Stash", "UnStash",
            "TextDescriptionOfImage",
+           "GradKSampler", "GradEnablePatches", "TrainingStep", "GradEnableLatent",
            ]
 classes.extend(DEV_CLASSES)
 
