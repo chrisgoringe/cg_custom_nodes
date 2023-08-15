@@ -44,4 +44,4 @@ class Truncate(Base):
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("string",)
     def func(self, string, length):
-        return (str(string)[:length]) 
+        return (str(string)[:length],) 
