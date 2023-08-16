@@ -18,21 +18,21 @@ def inspect_factory(name:str, to_inspect:str, display_name:str=None):
     clazz = type(name,(Base,),clazz_contents)
     return clazz
 
-def passthrough_factory(clazz_name:str, base_clazz:type, passed_names, category="CG/dev"):
+def passthrough_factory(clazz_name:str, base_clazz:type, passed_input_names, passed_output_names=None, category="CG/dev"):
     clazz = type(clazz_name, (base_clazz,), {"CATEGORY" : category, "FUNCTION" : "func"})
     input_types = clazz.INPUT_TYPES()
     in_types = {name:input_types[typ][name][0] for typ in input_types for name in input_types[typ]}
-    passed_types = [(in_types[name] if isinstance(in_types[name],str) else 'STRING') for name in passed_names]
+    passed_types = [(in_types[name] if isinstance(in_types[name],str) else 'STRING') for name in passed_input_names]
 
     if 'RETURN_NAMES' not in clazz.__dict__:
         clazz.RETURN_NAMES = clazz.RETURN_TYPES
-    clazz.RETURN_NAMES += passed_names
+    clazz.RETURN_NAMES += passed_output_names or passed_input_names
     
     clazz.RETURN_TYPES += tuple(passed_types)
     clazz.__func = base_clazz.__dict__[base_clazz.FUNCTION]
     def func(self, *args, **kwargs):
         orig = self.__func(*args, **kwargs)
-        return orig[:-len(passed_names)] + tuple(kwargs[name] for name in passed_names)
+        return orig[:-len(passed_input_names)] + tuple(kwargs[name] for name in passed_input_names)
     clazz.func = func
     return clazz
 
@@ -45,13 +45,17 @@ DEV_CLASSES = [f"Inspect{Thing}" for Thing in Things]
 from nodes import CheckpointLoaderSimple, KSampler, KSamplerAdvanced
 
 CheckpointLoaderPass = passthrough_factory('CheckpointLoaderPass',CheckpointLoaderSimple,
-                                           ("ckpt_name",), "CG/loaders")
+                                           ("ckpt_name",), 
+                                           ("name",),
+                                           category="CG/loaders")
 DEV_CLASSES.append('CheckpointLoaderPass')
 
 KSamplerPass = passthrough_factory('KSamplerPass', KSampler, 
-                                   ('positive', 'negative', 'latent_image', 'seed',), "CG/sampling")
+                                   ('positive', 'negative', 'latent_image', 'seed',), 
+                                   category="CG/sampling")
 DEV_CLASSES.append('KSamplerPass')
 
 KSamplerAdvancedPass = passthrough_factory('KSamplerAdvancedPass', KSamplerAdvanced, 
-                                           ('positive', 'negative', 'latent_image', 'noise_seed', 'end_at_step' ), "CG/sampling")
+                                           ('positive', 'negative', 'latent_image', 'noise_seed', 'end_at_step' ), 
+                                           category="CG/sampling")
 DEV_CLASSES.append('KSamplerAdvancedPass')

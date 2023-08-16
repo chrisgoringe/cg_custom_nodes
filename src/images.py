@@ -1,6 +1,8 @@
 import torch
 from src.base import Base
-import math
+import math, os
+from PIL import Image, ImageDraw, ImageFont
+import numpy as np
 
 def mask_to_image(mask:torch.tensor):
     return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
@@ -95,3 +97,25 @@ class MergeImages(Base):
 
     def func(self, image1:torch.Tensor, image2:torch.Tensor, image2weight:float) -> torch.Tensor:
         return (image1*(1-image2weight)+image2*image2weight, )
+
+def pillow_to_tensor(image: Image.Image):
+    return torch.from_numpy(np.array(image).astype(np.float32) / 255.0).unsqueeze(0)
+
+class TextToImage(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { 
+        "text": ("STRING", {}),
+        "width": ("INT", {"default":512}),
+        "height": ("INT", {"default":32}), 
+        "font_size": ("INT", {"default":24}),  
+    }
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
+    OUTPUT_NODE = True
+
+    def func(self, text:str, width:int, height:int, font_size:int):
+        image = Image.new("RGB",(width,height),color="white")
+        draw = ImageDraw.Draw(image)
+        draw.font = ImageFont.truetype( os.path.join(os.path.dirname(os.path.realpath(__file__)),"font","Roboto-Regular.ttf"), size=font_size)
+        draw.text(xy=(4,4), text=text, fill="black")
+        return (pillow_to_tensor(image),)
