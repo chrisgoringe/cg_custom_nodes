@@ -4,7 +4,7 @@ from src.base import Base, SeedContext
 EXT_CLASSES = []
 
 try:
-    from custom_nodes.sdxl_prompt_styler.sdxl_prompt_styler import SDXLPromptStyler, read_json_file, read_sdxl_styles
+    from custom_nodes.sdxl_prompt_styler.sdxl_prompt_styler import SDXLPromptStyler, read_json_file
     class RandomSdxlStyle(SDXLPromptStyler):
         resource_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),'resources')
         @classmethod
@@ -25,7 +25,7 @@ try:
   
             with SeedContext(seed):
                 style = random.choice(self.json_data)
-                stylename = style['name'] if 'name' in style else 'none'
+                stylename = style['name']
 
             return self.prompt_styler(text_positive, text_negative, stylename, log_prompt)+(stylename,)
         
