@@ -1,4 +1,4 @@
-from src.base import Base
+from src.base import Base, SeedContext
 import random
        
 class CommonSizes(Base):
@@ -14,11 +14,11 @@ class CommonSizes(Base):
 class RandomBase(Base):
     RETURN_NAMES = ("rand",)
     CATEGORY = "CG/numbers"
+    def IS_CHANGED(self, minimum, maximum, seed):
+        return self.func(minimum, maximum, seed)[0]
     def func(self, minimum, maximum, seed):
-        state = random.getstate()
-        random.seed(seed)
-        rand = self.gen(minimum, maximum)
-        random.setstate(state=state)
+        with SeedContext(seed):
+            rand = self.gen(minimum, maximum)
         return (rand,)
     gen = lambda a,b:0
 

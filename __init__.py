@@ -12,7 +12,8 @@ from .src.conditioning import *
 from .src.extensions import *
 
 classes = ["CommonSizes", "RandomFloat", "RandomInt", 
-           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeImages", "TextToImage",
+           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", 
+                "MergeImages", "TextToImage", "LoadRandomImage", "CombineImages",
            "MergeLatents", "MergeLatentsSettings",
            "MergeConditionings", "TwoClipTextEncode", 
            "String", "Substitute", "SimpleLog", "Truncate",

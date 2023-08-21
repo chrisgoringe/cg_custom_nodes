@@ -1,7 +1,7 @@
 import torch
 from src.base import Base
-import math, os
-from PIL import Image, ImageDraw, ImageFont
+import math, os, random
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import numpy as np
 
 def mask_to_image(mask:torch.tensor):
@@ -106,16 +106,50 @@ class TextToImage(Base):
     REQUIRED = { 
         "text": ("STRING", {}),
         "width": ("INT", {"default":512}),
-        "height": ("INT", {"default":32}), 
-        "font_size": ("INT", {"default":24}),  
+        "height": ("INT", {"default":26}), 
+        "font_size": ("INT", {"default":18}),  
     }
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("image",)
-    OUTPUT_NODE = True
 
     def func(self, text:str, width:int, height:int, font_size:int):
         image = Image.new("RGB",(width,height),color="white")
         draw = ImageDraw.Draw(image)
-        draw.font = ImageFont.truetype( os.path.join(os.path.dirname(os.path.realpath(__file__)),"font","Roboto-Regular.ttf"), size=font_size)
+        draw.font = ImageFont.truetype( os.path.join(os.path.dirname(os.path.realpath(__file__)),"resources","Roboto-Regular.ttf"), size=font_size)
         draw.text(xy=(4,4), text=text, fill="black")
         return (pillow_to_tensor(image),)
+
+class LoadRandomImage(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { "folder": ("STRING", {} ) }
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
+
+    def func(self, folder):
+        files = [file for file in os.listdir(folder) if file.endswith("png")]
+        file = os.path.join(folder, random.choice(files))
+        i = Image.open(file)
+        i = ImageOps.exif_transpose(i)
+        image = i.convert("RGB")
+        image = np.array(image).astype(np.float32) / 255.0
+        image = torch.from_numpy(image)[None,]
+        return (image, )
+
+    def IS_CHANGED(self,folder):
+        return random.random()
+
+class CombineImages(Base):
+    CATEGORY = "CG/images"
+    REQUIRED = { 
+        "image1": ("IMAGE",) ,
+        "image2": ("IMAGE",) ,
+    }
+    OPTIONAL = {
+        "image3": ("IMAGE",) ,
+        "image4": ("IMAGE",) ,
+    }
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("image",)
+    def func(self, image1, image2, image3=None, image4=None):
+        return (torch.cat( tuple(i for i in (image1, image2, image3, image4) if i is not None), 0 ),)
+        

@@ -33,7 +33,7 @@ class UnStash:
 
     @classmethod    
     def INPUT_TYPES(s):
-        return {"required": { "id": ("STRING", { "default":"stash" } ), "initial": ("LATENT",), "use": (("latest", "previous", "initial"), {})} } 
+        return {"required": { "id": ("STRING", { "default":"stash" } ), "initial": ("LATENT",), "use": (("latest", "initial", "previous"), {})} } 
 
     RETURN_TYPES = ("LATENT",)
     RETURN_NAMES = ("latent",)
