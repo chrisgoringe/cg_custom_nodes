@@ -85,19 +85,6 @@ class ResizeImage(Base):
         
         return (image,) if (h==height and w==width) else (resize(image,height,width),)
 
-class MergeImages(Base):
-    CATEGORY = "CG/images"
-    REQUIRED = { 
-        "image1": ("IMAGE",) ,
-        "image2": ("IMAGE",) ,
-        "image2weight": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.01}),
-    }
-    RETURN_TYPES = ("IMAGE", )
-    RETURN_NAMES = ("image", )
-
-    def func(self, image1:torch.Tensor, image2:torch.Tensor, image2weight:float) -> torch.Tensor:
-        return (image1*(1-image2weight)+image2*image2weight, )
-
 def pillow_to_tensor(image: Image.Image):
     return torch.from_numpy(np.array(image).astype(np.float32) / 255.0).unsqueeze(0)
 
@@ -153,3 +140,4 @@ class CombineImages(Base):
     def func(self, image1, image2, image3=None, image4=None):
         return (torch.cat( tuple(i for i in (image1, image2, image3, image4) if i is not None), 0 ),)
         
+CLAZZES = [ResizeImage, ExactResizeImage, ImageSize, CompareImages, CombineImages, HardMask, TextToImage, LoadRandomImage]

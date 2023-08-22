@@ -4,7 +4,7 @@ Things = ["Clip", "Conditioning", "Float", "Image", "Int", "Latent", "Mask", "Mo
 for Thing in Things:
     globals()[f"Inspect{Thing}"] = inspect_factory(f"Inspect{Thing}", Thing.upper(), Thing)
 
-DEV_CLASSES = [f"Inspect{Thing}" for Thing in Things]
+CLAZZES = [f"Inspect{Thing}" for Thing in Things]
 
 from nodes import CheckpointLoaderSimple, KSampler, KSamplerAdvanced, LoraLoader
 
@@ -12,20 +12,20 @@ CheckpointLoaderPass = passthrough_factory('CheckpointLoaderPass',CheckpointLoad
                                            ("ckpt_name",), 
                                            ("name",),
                                            category="CG/loaders")
-DEV_CLASSES.append('CheckpointLoaderPass')
+CLAZZES.append('CheckpointLoaderPass')
 
 KSamplerPass = passthrough_factory('KSamplerPass', KSampler, 
                                    ('model', 'positive', 'negative', 'seed',), 
                                    category="CG/sampling")
-DEV_CLASSES.append('KSamplerPass')
+CLAZZES.append('KSamplerPass')
 
 KSamplerAdvancedPass = passthrough_factory('KSamplerAdvancedPass', KSamplerAdvanced, 
                                            ('model', 'positive', 'negative', 'noise_seed', 'steps', 'end_at_step' ), 
                                            category="CG/sampling")
-DEV_CLASSES.append('KSamplerAdvancedPass')
+CLAZZES.append('KSamplerAdvancedPass')
 
 LoraLoaderPass = passthrough_factory('LoraLoaderPass', LoraLoader,
                                      ("lora_name",),
                                      ("name",),
                                      category="CG/loaders")
-DEV_CLASSES.append('LoraLoaderPass')
+CLAZZES.append('LoraLoaderPass')

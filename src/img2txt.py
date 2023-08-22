@@ -82,3 +82,5 @@ class TextDescriptionOfImage(Base):
 
         os.chdir(cwd)
         return (caption[0],)
+    
+CLAZZES = [TextDescriptionOfImage]

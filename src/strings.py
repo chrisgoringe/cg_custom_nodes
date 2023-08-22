@@ -34,3 +34,5 @@ class Truncate(Base):
     RETURN_NAMES = ("string",)
     def func(self, string, length):
         return (str(string)[:length],) 
+    
+CLAZZES = [String, SimpleLog, Substitute, Truncate]

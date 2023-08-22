@@ -40,3 +40,4 @@ class RandomInt(RandomBase):
     RETURN_TYPES = ("INT",)
     gen = random.randint
     
+CLAZZES = [CommonSizes, RandomBase, RandomFloat, RandomInt]

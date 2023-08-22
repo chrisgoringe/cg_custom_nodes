@@ -1,7 +1,7 @@
 import random, os
 from src.base import Base, SeedContext
 
-EXT_CLASSES = []
+CLAZZES = []
 
 try:
     from custom_nodes.sdxl_prompt_styler.sdxl_prompt_styler import SDXLPromptStyler, read_json_file
@@ -29,7 +29,7 @@ try:
 
             return self.prompt_styler(text_positive, text_negative, stylename, log_prompt)+(stylename,)
         
-    EXT_CLASSES.append("RandomSdxlStyle",)
+    CLAZZES.append(RandomSdxlStyle)
 
 except:
     print("Random SDXL Prompt requires sdxl_prompt_styler")

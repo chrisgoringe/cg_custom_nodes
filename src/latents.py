@@ -28,3 +28,5 @@ class MergeLatentsSettings(Base):
     RETURN_NAMES = ("latent2weight", "denoise_stage1", "denoise_stage2", )
     def func(self, latent2weight, denoise_stage1, denoise_stage2):
         return (latent2weight, denoise_stage1, denoise_stage2)
+    
+CLAZZES = [MergeLatents, MergeLatentsSettings]

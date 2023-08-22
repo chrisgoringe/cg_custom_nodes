@@ -22,3 +22,5 @@ class TwoClipTextEncode(Base):
 
     def func(self, clip, positive, negative):
         return(self.encoder(clip,positive)[0], self.encoder(clip,negative)[0], )
+
+CLAZZES = [MergeConditionings, TwoClipTextEncode]
