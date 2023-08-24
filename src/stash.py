@@ -1,5 +1,5 @@
 import random
-from src.base import Base
+from src.base import Base, classproperty
 import torch
 
 class Stash(Base):
@@ -32,8 +32,24 @@ class Stash(Base):
         return ()
     
 class UnStash(Base):
-    REQUIRED = { "id": ("STRING", { "default":"stash" } ), "initial": ("",), "use": (("latest", "initial", "previous"), {})}  
     CATEGORY = "CG/stash"
+    TYPE = ""
+    _REQUIRED = {}
+    
+    @classproperty
+    def REQUIRED(cls):
+        d = { "id": ("STRING", { "default":"stash" } ), "initial": (cls.TYPE,), "use": (("latest", "initial", "previous"), {})}
+        for k in cls._REQUIRED:
+            d[k] = cls._REQUIRED[k]
+        return d
+    
+    @classproperty
+    def RETURN_TYPES(cls):
+        return (cls.TYPE,)
+    
+    @classproperty
+    def RETURN_NAMES(cls):
+        return (cls.TYPE.lower(),)
 
     def func(self, id, initial, use):
         if (use=="latest" and id in Stash.stashed_items and Stash.stashed_items[id] is not None):
@@ -51,15 +67,15 @@ class UnStash(Base):
         return random.random()
     
 class UnstashLatent(UnStash):
-    RETURN_TYPES = ("LATENT",)
-    RETURN_NAMES = ("latent",)
-    REQUIRED = UnStash.REQUIRED
-    REQUIRED['initial'] = ("LATENT",)
-    REQUIRED['use_initial_mask'] = (["yes", "no"],{})
+    TYPE = "LATENT"
+    _REQUIRED = {'use_initial_mask' : (["yes", "no"],{})}
     def func(self, id, initial, use, use_initial_mask):
         latent = super().func(id, initial, use)[0]
         if use_initial_mask and 'noise_mask' in initial:
             latent['noise_mask'] = initial['noise_mask']
         return (latent,)
-
-CLAZZES = [Stash, UnstashLatent]
+    
+class UnstashImage(UnStash):
+    TYPE = "IMAGE"
+    
+CLAZZES = [Stash, UnstashLatent, UnstashImage]

@@ -1,10 +1,15 @@
 from src.base import Base, SeedContext
+from common import read_config
 import random, math
+try:
+    import yaml
+    YAML = True
+except:
+    YAML = False
        
 class CommonSizes(Base):
     CATEGORY = "CG/numbers"
-    REQUIRED = { "size": (("512x512", "512x768", "512x1024", "768x512", "768x768", "768x1024", "1024x512", "1024x768", "1024x1024",
-                           "640x1536", "768x1344", "832x1216", "896x1152"), {}) }
+    REQUIRED = { "size": (read_config('sizes'), {}) }
     RETURN_TYPES = ("INT","INT")
     RETURN_NAMES = ("width","height")
     def func(self,size:str):
@@ -57,5 +62,16 @@ class RandomInt(RandomBase):
             }
     RETURN_TYPES = ("INT",)
     gen = random.randint
+
+class StringToInt(Base):
+    CATEGORY = "CG/numbers"
+    REQUIRED = { "string": ("STRING", {"default":"0"}) }
+    RETURN_TYPES = ("INT",)
+    RETURN_NAMES = ("int",)
+    def func(self, string):
+        try:
+            return (int(string),)
+        except:
+            return (0,)
     
-CLAZZES = [CommonSizes, RandomShape, RandomFloat, RandomInt]
+CLAZZES = [CommonSizes, RandomShape, RandomFloat, RandomInt, StringToInt]

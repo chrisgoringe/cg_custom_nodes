@@ -1,8 +1,9 @@
-from src.base import Base
+from src.base import Base, classproperty
 from nodes import LoadImage
 import folder_paths
 from PIL import Image
 import json
+from common import read_config
 
 class LoadImageWithDictionary(LoadImage):
     CATEGORY = 'CG/metadata'
@@ -35,12 +36,20 @@ class LoadImageWithDictionary(LoadImage):
         return LoadImage.VALIDATE_INPUTS(image)
 
 class ExtractFromDictionary(Base):
+    LABELS = list(read_config('dictionary_labels'))
     CATEGORY = 'CG/metadata'
     REQUIRED = { "dictionary": ("DICTIONARY", {}) }
-    OPTIONAL = { f"label{i+1}": ("STRING", {"default":["seed", "checkpoint", "unstyled_prompt", "unstyled_negative", "style", "prompt", "negative"][i]}) for i in range(7) }
-    RETURN_TYPES = tuple("STRING" for i in range(7))
+
+    @classproperty
+    def OPTIONAL(cls):
+        return { f"label{i+1}": ("STRING", {"default":label}) for i, label in enumerate(cls.LABELS) }
+    
+    @classproperty
+    def RETURN_TYPES(cls):
+        return tuple("STRING" for _ in cls.LABELS)
+    
     def func(self, dictionary:dict, **kwargs):
-        return tuple(dictionary.get(kwargs.get(f"label{i}","")) or "" for i in range(1,8))
+        return tuple(dictionary.get(kwargs.get(f"label{i+1}","")) or "" for i in range(len(self.LABELS)))
 
 class MakeDictionary(Base):
     CATEGORY = "CG/metadata"
