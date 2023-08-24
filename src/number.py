@@ -1,5 +1,5 @@
 from src.base import Base, SeedContext
-import random
+import random, math
        
 class CommonSizes(Base):
     CATEGORY = "CG/numbers"
@@ -11,6 +11,20 @@ class CommonSizes(Base):
         x, y = [int(v) for v in size.split('x')]
         return (x,y)
     
+class RandomShape(Base):
+    CATEGORY = "CG/numbers"
+    REQUIRED = { "square_size" : ("INT", {"default":1024, "min":256, "max":2048, "step": 8}),
+                 "max_aspect" : ("FLOAT", {"default":2.5, "min": 1.1, "max":10.0, "step":0.1}),
+                 "seed": ("INT",{"default": 0, "min": 0, "max": 0xffffffffffffffff}), }
+    RETURN_TYPES = ("INT","INT","INT")
+    RETURN_NAMES = ("width","height","seed")
+    def func(self,square_size:int, max_aspect:float, seed:int):
+        with SeedContext():
+            aspect = math.sqrt(random.random() * (max_aspect-1.0) + 1.0)
+            bigger = (int(square_size * aspect) // 8) * 8
+            smaller = (int(square_size / aspect) // 8) * 8
+            return (bigger, smaller, seed) if random.random() > 0.5 else (smaller, bigger, seed)
+
 class RandomBase(Base):
     RETURN_NAMES = ("rand",)
     CATEGORY = "CG/numbers"
@@ -40,4 +54,4 @@ class RandomInt(RandomBase):
     RETURN_TYPES = ("INT",)
     gen = random.randint
     
-CLAZZES = [CommonSizes, RandomBase, RandomFloat, RandomInt]
+CLAZZES = [CommonSizes, RandomShape, RandomFloat, RandomInt]

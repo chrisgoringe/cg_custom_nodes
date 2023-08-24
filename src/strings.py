@@ -1,4 +1,5 @@
 from src.base import Base
+import os
 
 class String(Base):
     CATEGORY = "CG/strings"
@@ -35,4 +36,13 @@ class Truncate(Base):
     def func(self, string, length):
         return (str(string)[:length],) 
     
-CLAZZES = [String, SimpleLog, Substitute, Truncate]
+class SaveDescription(Base):
+    CATEGORY = "CG/strings"
+    REQUIRED = {"description": ("STRING", {}), "image_filepath": ("STRING", {})}
+    OUTPUT_NODE = True
+    def func(self, description, image_filepath):
+        text_filepath = os.path.splitext(image_filepath)[0] + ".txt"
+        print(description, file=open(file=text_filepath,mode="w"))
+        return ()
+    
+CLAZZES = [String, SimpleLog, Substitute, Truncate, SaveDescription]

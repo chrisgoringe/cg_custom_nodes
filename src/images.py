@@ -109,18 +109,20 @@ class TextToImage(Base):
 class LoadRandomImage(Base):
     CATEGORY = "CG/images"
     REQUIRED = { "folder": ("STRING", {} ) }
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("image",)
+    OPTIONAL = { "index": ("INT", {"default":-1}) }
+    RETURN_TYPES = ("IMAGE","STRING",)
+    RETURN_NAMES = ("image","filepath",)
 
-    def func(self, folder):
-        files = [file for file in os.listdir(folder) if file.endswith("png")]
-        file = os.path.join(folder, random.choice(files))
+    def func(self, folder, index=-1):
+        files = [file for file in os.listdir(folder) if (file.endswith("png") or file.endswith("jpg"))]
+        file = random.choice(files) if index==-1 else files[index % len(files)]
+        file = os.path.join(folder, file)
         i = Image.open(file)
         i = ImageOps.exif_transpose(i)
         image = i.convert("RGB")
         image = np.array(image).astype(np.float32) / 255.0
         image = torch.from_numpy(image)[None,]
-        return (image, )
+        return (image, file, )
 
     def IS_CHANGED(self,folder):
         return random.random()

@@ -17,8 +17,8 @@ try:
             return it
         CATEGORY = 'CG/prompting'
         FUNCTION = 'func'
-        RETURN_TYPES = ('STRING','STRING','STRING',)
-        RETURN_NAMES = ('positive','negative','style_name',)
+        RETURN_TYPES = ('STRING','STRING','STRING','INT',)
+        RETURN_NAMES = ('positive','negative','style_name','seed',)
         def func(self, text_positive, text_negative, log_prompt, json_file, seed=None):
             file_path = os.path.join(self.resource_dir, json_file)
             self.json_data = read_json_file(file_path)
@@ -27,7 +27,7 @@ try:
                 style = random.choice(self.json_data)
                 stylename = style['name']
 
-            return self.prompt_styler(text_positive, text_negative, stylename, log_prompt)+(stylename,)
+            return self.prompt_styler(text_positive, text_negative, stylename, log_prompt)+(stylename,seed,)
         
     CLAZZES.append(RandomSdxlStyle)
 

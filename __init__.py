@@ -10,7 +10,6 @@ for module in [os.path.splitext(f)[0] for f in os.listdir(os.path.join(directory
     if 'CLAZZES' in imported_module.__dict__:
         for clazz in imported_module.CLAZZES:
             name = clazz.__name__
-            print(name)
             NODE_CLASS_MAPPINGS[name] = clazz
             NODE_DISPLAY_NAME_MAPPINGS[name] = name
 

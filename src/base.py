@@ -5,12 +5,17 @@ class Base:
         pass
     FUNCTION = "func"
     OPTIONAL = None
+    HIDDEN = None
     @classmethod    
     def INPUT_TYPES(s):
         types = {"required": s.REQUIRED}
         if s.OPTIONAL:
             types["optional"] = s.OPTIONAL
+        if s.HIDDEN:
+            types["hidden"] = s.HIDDEN
         return types
+    RETURN_TYPES = ()
+    RETURN_NAMES = ()
 
 class SeedContext():
     """

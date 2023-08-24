@@ -1,4 +1,6 @@
 from src.base import Base
+import torch
+from comfy.sample import prepare_noise
 
 class MergeLatents(Base):
     CATEGORY = "CG/latents"
@@ -28,5 +30,27 @@ class MergeLatentsSettings(Base):
     RETURN_NAMES = ("latent2weight", "denoise_stage1", "denoise_stage2", )
     def func(self, latent2weight, denoise_stage1, denoise_stage2):
         return (latent2weight, denoise_stage1, denoise_stage2)
-    
-CLAZZES = [MergeLatents, MergeLatentsSettings]
+
+class CombineSamples(Base):
+    CATEGORY = "CG/latents"
+    REQUIRED = { 
+        "latent1": ("LATENT",) ,
+        "latent2": ("LATENT",) ,
+    }
+    OPTIONAL = {
+        "latent3": ("LATENT",) ,
+        "latent4": ("LATENT",) ,
+    }
+    RETURN_TYPES = ("LATENT",)
+    RETURN_NAMES = ("samples",)
+    def func(self, latent1, latent2, latent3={}, latent4={}):
+        result = {}
+        for key in latent1:
+            list = [l[key] for l in (latent1, latent2, latent3, latent4) if key in l]
+            if isinstance(list[0], torch.Tensor):
+                result[key] = torch.cat(tuple(list),0)
+            else:
+                result[key] = list[0]
+        return (result,)
+        
+CLAZZES = [MergeLatents, MergeLatentsSettings, CombineSamples]
