@@ -1,4 +1,4 @@
-import sys, os, importlib
+import sys, os, importlib, shutil
 directory = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0,directory)
 
@@ -14,3 +14,9 @@ for module in [os.path.splitext(f)[0] for f in os.listdir(os.path.join(directory
             NODE_DISPLAY_NAME_MAPPINGS[name] = name
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
+
+import folder_paths
+
+src = os.path.join(directory, "js")
+dst = os.path.join(os.path.dirname(folder_paths.__file__), "web", "extensions")
+shutil.copytree(src, dst, dirs_exist_ok=True)

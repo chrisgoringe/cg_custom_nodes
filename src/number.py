@@ -15,15 +15,19 @@ class RandomShape(Base):
     CATEGORY = "CG/numbers"
     REQUIRED = { "square_size" : ("INT", {"default":1024, "min":256, "max":2048, "step": 8}),
                  "max_aspect" : ("FLOAT", {"default":2.5, "min": 1.1, "max":10.0, "step":0.1}),
+                 "fraction_landscape" : ("FLOAT", {"default":0.5, "min":0.0, "max":1.0, "step":0.1}),
                  "seed": ("INT",{"default": 0, "min": 0, "max": 0xffffffffffffffff}), }
     RETURN_TYPES = ("INT","INT","INT")
     RETURN_NAMES = ("width","height","seed")
-    def func(self,square_size:int, max_aspect:float, seed:int):
-        with SeedContext():
+    def func(self,square_size:int, max_aspect:float, fraction_landscape:float, seed:int):
+        with SeedContext(seed):
             aspect = math.sqrt(random.random() * (max_aspect-1.0) + 1.0)
             bigger = (int(square_size * aspect) // 8) * 8
             smaller = (int(square_size / aspect) // 8) * 8
-            return (bigger, smaller, seed) if random.random() > 0.5 else (smaller, bigger, seed)
+            return (bigger, smaller, seed) if random.random() < fraction_landscape else (smaller, bigger, seed)
+    def IS_CHANGED(self, square_size:int, max_aspect:float, seed:int):
+        with SeedContext(seed):
+            return random.random()
 
 class RandomBase(Base):
     RETURN_NAMES = ("rand",)

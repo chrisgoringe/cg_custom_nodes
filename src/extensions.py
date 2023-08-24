@@ -1,5 +1,5 @@
 import random, os
-from src.base import Base, SeedContext
+from src.base import SeedContext
 
 CLAZZES = []
 
@@ -33,5 +33,4 @@ try:
 
 except:
     print("Random SDXL Prompt requires sdxl_prompt_styler")
-
 
