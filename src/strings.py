@@ -1,6 +1,14 @@
 from src.base import Base
 import os
 
+class Stringify(Base):
+    CATEGORY = "CG/strings"
+    OPTIONAL = {"thing": ("*", {})}
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("string",)
+    def func(self, thing=None):
+        return (str(thing),)
+    
 class String(Base):
     CATEGORY = "CG/strings"
     REQUIRED = {"string": ("STRING", {"default":""})}
@@ -8,6 +16,14 @@ class String(Base):
     RETURN_NAMES = ("string",)
     def func(self, string):
         return (string,)
+    
+class StringPair(Base):
+    CATEGORY = "CG/strings"
+    REQUIRED = {"string1": ("STRING", {"default":""}), "string2": ("STRING", {"default":""})}
+    RETURN_TYPES = ("STRING","STRING",)
+    RETURN_NAMES = ("string1","string2",)
+    def func(self, string1, string2):
+        return (string1, string2)
      
 class SimpleLog(Base):
     CATEGORY = "CG/strings"
@@ -45,4 +61,4 @@ class SaveDescription(Base):
         print(description, file=open(file=text_filepath,mode="w"))
         return ()
     
-CLAZZES = [String, SimpleLog, Substitute, Truncate, SaveDescription]
+CLAZZES = [String, StringPair, Stringify, SimpleLog, Substitute, Truncate, SaveDescription]

@@ -65,13 +65,13 @@ class RandomInt(RandomBase):
 
 class StringToInt(Base):
     CATEGORY = "CG/numbers"
-    REQUIRED = { "string": ("STRING", {"default":"0"}) }
+    REQUIRED = { "string": ("STRING", {"default":"0"}), "fallback": ("INT", {"default":0}) }
     RETURN_TYPES = ("INT",)
     RETURN_NAMES = ("int",)
-    def func(self, string):
+    def func(self, string, fallback):
         try:
             return (int(string),)
         except:
-            return (0,)
+            return (fallback,)
     
 CLAZZES = [CommonSizes, RandomShape, RandomFloat, RandomInt, StringToInt]

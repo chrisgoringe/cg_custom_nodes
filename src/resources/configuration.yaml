@@ -12,6 +12,8 @@ sizes:
 - 768x1344
 - 832x1216
 - 896x1152
+dictionary_name:
+- cg
 dictionary_labels:
 - seed
 - checkpoint

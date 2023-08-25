@@ -12,7 +12,19 @@ for Thing in Things:
 
 from nodes import CheckpointLoaderSimple, KSampler, KSamplerAdvanced, LoraLoader
 
-CheckpointLoaderPass = passthrough_factory('CheckpointLoaderPass',CheckpointLoaderSimple,
+class CheckpointLoaderSelective(CheckpointLoaderSimple):
+    @classmethod
+    def INPUT_TYPES(s):
+        input_types = CheckpointLoaderSimple.INPUT_TYPES()
+        input_types['optional'] = { "name": ("STRING", {"forceInput":True}) }
+        return input_types
+    FUNCTION = "func"
+    category="CG/loaders"
+    def func(self, ckpt_name, name=None, output_vae=True, output_clip=True):
+        return super().load_checkpoint(name or ckpt_name, output_vae, output_clip)
+
+
+CheckpointLoaderPass = passthrough_factory('CheckpointLoaderPass',CheckpointLoaderSelective,
                                            ("ckpt_name",), 
                                            ("name",),
                                            category="CG/loaders")

@@ -4,6 +4,7 @@ class Base:
     def __init__(self):
         pass
     FUNCTION = "func"
+    REQUIRED = {}
     OPTIONAL = None
     HIDDEN = None
     @classmethod    
