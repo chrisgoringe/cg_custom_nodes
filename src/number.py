@@ -1,5 +1,5 @@
-from src.base import Base, SeedContext
-from common import read_config
+from src.base import Base_custom, SeedContext
+from common_custom import read_config
 import random, math
 try:
     import yaml
@@ -7,7 +7,7 @@ try:
 except:
     YAML = False
        
-class CommonSizes(Base):
+class CommonSizes(Base_custom):
     CATEGORY = "CG/numbers"
     REQUIRED = { "size": (read_config('sizes'), {}) }
     RETURN_TYPES = ("INT","INT")
@@ -16,7 +16,7 @@ class CommonSizes(Base):
         x, y = [int(v) for v in size.split('x')]
         return (x,y)
     
-class RandomShape(Base):
+class RandomShape(Base_custom):
     CATEGORY = "CG/numbers"
     REQUIRED = { "square_size" : ("INT", {"default":1024, "min":256, "max":2048, "step": 8}),
                  "max_aspect" : ("FLOAT", {"default":2.5, "min": 1.1, "max":10.0, "step":0.1}),
@@ -34,36 +34,7 @@ class RandomShape(Base):
         with SeedContext(seed):
             return random.random()
 
-class RandomBase(Base):
-    RETURN_NAMES = ("rand",)
-    CATEGORY = "CG/numbers"
-    def IS_CHANGED(self, minimum, maximum, seed):
-        return self.func(minimum, maximum, seed)[0]
-    def func(self, minimum, maximum, seed):
-        with SeedContext(seed):
-            rand = self.gen(minimum, maximum)
-        return (rand,)
-    gen = lambda a,b:0
-
-class RandomFloat(RandomBase):
-    REQUIRED = { 
-                "minimum": ("FLOAT", {"default": 0.0}), 
-                "maximum": ("FLOAT", {"default": 1.0}), 
-                "seed": ("INT",{"default": 0, "min": 0, "max": 0xffffffffffffffff}),
-            }
-    RETURN_TYPES = ("FLOAT",)
-    gen = random.uniform
-
-class RandomInt(RandomBase):
-    REQUIRED = { 
-                "minimum": ("INT", {"default": 0}), 
-                "maximum": ("INT", {"default": 99999999}), 
-                "seed": ("INT",{"default": 0, "min": 0, "max": 0xffffffffffffffff}),
-            }
-    RETURN_TYPES = ("INT",)
-    gen = random.randint
-
-class StringToInt(Base):
+class StringToInt(Base_custom):
     CATEGORY = "CG/numbers"
     REQUIRED = { "string": ("STRING", {"default":"0"}), "fallback": ("INT", {"default":0}) }
     RETURN_TYPES = ("INT",)
@@ -74,4 +45,4 @@ class StringToInt(Base):
         except:
             return (fallback,)
     
-CLAZZES = [CommonSizes, RandomShape, RandomFloat, RandomInt, StringToInt]
+CLAZZES = [CommonSizes, RandomShape, StringToInt]

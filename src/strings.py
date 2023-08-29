@@ -1,7 +1,7 @@
-from src.base import Base
+from src.base import Base_custom
 import os
 
-class Stringify(Base):
+class Stringify(Base_custom):
     CATEGORY = "CG/strings"
     OPTIONAL = {"thing": ("*", {})}
     RETURN_TYPES = ("STRING",)
@@ -9,7 +9,7 @@ class Stringify(Base):
     def func(self, thing=None):
         return (str(thing),)
     
-class String(Base):
+class String(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = {"string": ("STRING", {"default":""})}
     RETURN_TYPES = ("STRING",)
@@ -17,7 +17,7 @@ class String(Base):
     def func(self, string):
         return (string,)
     
-class StringPair(Base):
+class StringPair(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = {"string1": ("STRING", {"default":""}), "string2": ("STRING", {"default":""})}
     RETURN_TYPES = ("STRING","STRING",)
@@ -25,7 +25,7 @@ class StringPair(Base):
     def func(self, string1, string2):
         return (string1, string2)
      
-class SimpleLog(Base):
+class SimpleLog(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = { "label": ("STRING", {"default":""}) }
     OPTIONAL = { "anything": ("*", {}) }
@@ -35,7 +35,7 @@ class SimpleLog(Base):
         print (f"{label}{anything}")
         return ()
     
-class Substitute(Base):
+class Substitute(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = {"template": ("STRING", {"default":"", "multiline": True })}
     OPTIONAL = { "x": ("*", {}), "y": ("*", {}), "z": ("*", {}), }
@@ -44,7 +44,7 @@ class Substitute(Base):
     def func(self, template:str, x="", y="", z=""):
         return (template.replace("[X]",str(x)).replace("[Y]",str(y)).replace("[Z]",str(z)),)    
 
-class Truncate(Base):
+class Truncate(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = {"string": ("*", {}), "length": ("INT", {"default":40})}
     RETURN_TYPES = ("STRING",)
@@ -52,7 +52,7 @@ class Truncate(Base):
     def func(self, string, length):
         return (str(string)[:length],) 
     
-class SaveDescription(Base):
+class SaveDescription(Base_custom):
     CATEGORY = "CG/strings"
     REQUIRED = {"description": ("STRING", {}), "image_filepath": ("STRING", {})}
     OUTPUT_NODE = True

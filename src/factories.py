@@ -1,4 +1,4 @@
-from src.base import Base
+from src.base import Base_custom
 
 def func(input, log:bool, label:str):
     if log:
@@ -15,7 +15,7 @@ def inspect_factory(name:str, to_inspect:str, display_name:str=None):
         "OUTPUT_NODE" : True,
         "func" : lambda *args, **kwargs : func(kwargs[display_name], kwargs['log']=='yes', kwargs['label'] )
     }
-    clazz = type(name,(Base,),clazz_contents)
+    clazz = type(name,(Base_custom,),clazz_contents)
     return clazz
 
 def passthrough_factory(clazz_name:str, base_clazz:type, passed_input_names, passed_output_names=None, category="CG/dev"):

@@ -15,11 +15,17 @@ sizes:
 dictionary_name:
 - cg
 dictionary_labels:
-- seed
+- seed,INT
 - checkpoint
 - unstyled_prompt
 - unstyled_negative
 - style
 - prompt
 - negative
-- steps
+- steps,INT
+- cfg,FLOAT
+- comment
+dictionary_retrieve_types:
+- STRING
+- INT
+- FLOAT

@@ -1,4 +1,4 @@
-from src.base import Base
+from src.base import Base_custom
 from src.models.blip import blip_decoder
 import os
 import sys
@@ -36,7 +36,7 @@ def transformImage(input_image, image_size, device):
         1, -1, image_size, image_size
     )  # Change the shape of the output tensor
 
-class TextDescriptionOfImage(Base):
+class TextDescriptionOfImage(Base_custom):
     CATEGORY = "CG/blip"
     REQUIRED = { "image": ("IMAGE",),
                  "min_length": ("INT", {"default":5, "min":0, "max":100}), 

@@ -153,3 +153,5 @@ cython_debug/
 
 .vscode/
 .vscode/launch.json
+src/resources/sdxl_*_styles.json
+

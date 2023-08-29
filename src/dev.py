@@ -1,5 +1,5 @@
 from src.factories import inspect_factory, passthrough_factory
-from src.base import Base
+from src.base import Base_custom
 import random, json
 
 CLAZZES = []

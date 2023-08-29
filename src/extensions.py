@@ -1,5 +1,6 @@
 import random, os
 from src.base import SeedContext
+from common_custom import module_resource_directory
 
 CLAZZES = []
 
@@ -12,7 +13,7 @@ try:
             it = SDXLPromptStyler.INPUT_TYPES()
             it['optional'] = { "seed":("INT", {"default":0,"min": 0,"max":0xffffffffffffffff})}
             it['required'].pop('style')
-            it['required']['json_file'] = (list((f for f in os.listdir(cls.resource_dir) if f.endswith("styles.json"))),{})
+            it['required']['json_file'] = (list((f for f in os.listdir(module_resource_directory) if f.endswith("styles.json"))),{})
 
             return it
         CATEGORY = 'CG/prompting'
@@ -20,7 +21,7 @@ try:
         RETURN_TYPES = ('STRING','STRING','STRING','INT',)
         RETURN_NAMES = ('positive','negative','style_name','seed',)
         def func(self, text_positive, text_negative, log_prompt, json_file, seed=None):
-            file_path = os.path.join(self.resource_dir, json_file)
+            file_path = os.path.join(module_resource_directory, json_file)
             self.json_data = read_json_file(file_path)
   
             with SeedContext(seed):

@@ -1,8 +1,8 @@
-from src.base import Base
+from src.base import Base_custom
 import torch
 from comfy.sample import prepare_noise
 
-class MergeLatents(Base):
+class MergeLatents(Base_custom):
     CATEGORY = "CG/latents"
     REQUIRED = { 
         "latent1": ("LATENT",) ,
@@ -19,7 +19,7 @@ class MergeLatents(Base):
         result = {key:merge(latent1, latent2, key, latent2weight) for key in keys}
         return (result, )
     
-class MergeLatentsSettings(Base):
+class MergeLatentsSettings(Base_custom):
     CATEGORY = "CG/latents"  
     REQUIRED = { 
         "latent2weight": ("FLOAT",{"default":0.5, "min":0.0, "max":1.0, "step":0.01}),
@@ -31,7 +31,7 @@ class MergeLatentsSettings(Base):
     def func(self, latent2weight, denoise_stage1, denoise_stage2):
         return (latent2weight, denoise_stage1, denoise_stage2)
 
-class CombineSamples(Base):
+class CombineSamples(Base_custom):
     CATEGORY = "CG/latents"
     REQUIRED = { 
         "latent1": ("LATENT",) ,

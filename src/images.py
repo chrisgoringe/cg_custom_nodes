@@ -1,13 +1,14 @@
 import torch
-from src.base import Base
+from src.base import Base_custom
 import math, os, random
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 import numpy as np
+from common_custom import module_resource_directory
 
 def mask_to_image(mask:torch.tensor):
     return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)
     
-class ImageSize(Base):
+class ImageSize(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { "image": ("IMAGE",), }
     RETURN_TYPES = ("INT","INT","INT","INT")
@@ -15,7 +16,7 @@ class ImageSize(Base):
     def func(self, image:torch.Tensor):
         return (image.shape[2],image.shape[1],image.shape[0],image.shape[3])
     
-class CompareImages(Base):
+class CompareImages(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { "image1": ("IMAGE",), "image2": ("IMAGE",), }
     RETURN_TYPES = ("IMAGE","IMAGE")
@@ -28,7 +29,7 @@ class CompareImages(Base):
         combined = torch.cat((image1,image2,result),0)
         return (combined, result, )
 
-class HardMask(Base):
+class HardMask(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { "threshold": ("FLOAT",{"default": 0.5, "min": 0.0, "max": 1.0}) }
     OPTIONAL = {
@@ -47,7 +48,7 @@ def resize(image, height, width):
     scaled = torch.nn.functional.interpolate(permed, size=(height, width))
     return torch.permute(scaled, (0, 2, 3, 1))
 
-class ExactResizeImage(Base):
+class ExactResizeImage(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { 
         "image": ("IMAGE",) ,
@@ -60,7 +61,7 @@ class ExactResizeImage(Base):
         h,w = image.shape[1:3]
         return (image,) if (h==height and w==width) else (resize(image,height,width),)
     
-class ResizeImage(Base):
+class ResizeImage(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { 
         "image": ("IMAGE",) ,
@@ -88,7 +89,7 @@ class ResizeImage(Base):
 def pillow_to_tensor(image: Image.Image):
     return torch.from_numpy(np.array(image).astype(np.float32) / 255.0).unsqueeze(0)
 
-class TextToImage(Base):
+class TextToImage(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { 
         "text": ("STRING", {}),
@@ -102,32 +103,11 @@ class TextToImage(Base):
     def func(self, text:str, width:int, height:int, font_size:int):
         image = Image.new("RGB",(width,height),color="white")
         draw = ImageDraw.Draw(image)
-        draw.font = ImageFont.truetype( os.path.join(os.path.dirname(os.path.realpath(__file__)),"resources","Roboto-Regular.ttf"), size=font_size)
+        draw.font = ImageFont.truetype( os.path.join(module_resource_directory,"Roboto-Regular.ttf"), size=font_size)
         draw.text(xy=(4,4), text=text, fill="black")
         return (pillow_to_tensor(image),)
 
-class LoadRandomImage(Base):
-    CATEGORY = "CG/images"
-    REQUIRED = { "folder": ("STRING", {} ) }
-    OPTIONAL = { "index": ("INT", {"default":-1}) }
-    RETURN_TYPES = ("IMAGE","STRING",)
-    RETURN_NAMES = ("image","filepath",)
-
-    def func(self, folder, index=-1):
-        files = [file for file in os.listdir(folder) if (file.endswith("png") or file.endswith("jpg"))]
-        file = random.choice(files) if index==-1 else files[index % len(files)]
-        file = os.path.join(folder, file)
-        i = Image.open(file)
-        i = ImageOps.exif_transpose(i)
-        image = i.convert("RGB")
-        image = np.array(image).astype(np.float32) / 255.0
-        image = torch.from_numpy(image)[None,]
-        return (image, file, )
-
-    def IS_CHANGED(self,folder):
-        return random.random()
-
-class CombineImages(Base):
+class CombineImages(Base_custom):
     CATEGORY = "CG/images"
     REQUIRED = { 
         "image1": ("IMAGE",) ,
@@ -142,4 +122,4 @@ class CombineImages(Base):
     def func(self, image1, image2, image3=None, image4=None):
         return (torch.cat( tuple(i for i in (image1, image2, image3, image4) if i is not None), 0 ),)
         
-CLAZZES = [ResizeImage, ExactResizeImage, ImageSize, CompareImages, CombineImages, HardMask, TextToImage, LoadRandomImage]
+CLAZZES = [ResizeImage, ExactResizeImage, ImageSize, CompareImages, CombineImages, HardMask, TextToImage]

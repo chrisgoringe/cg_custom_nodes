@@ -1,6 +1,6 @@
 import random
 
-class Base:
+class Base_custom:
     def __init__(self):
         pass
     FUNCTION = "func"

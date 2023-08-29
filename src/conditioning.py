@@ -1,7 +1,7 @@
-from src.base import Base
+from src.base import Base_custom
 from nodes import ConditioningSetMask, CLIPTextEncode
 
-class MergeConditionings(Base):
+class MergeConditionings(Base_custom):
     CATEGORY = "CG/conditioning"
     REQUIRED = {"conditioning1": ("CONDITIONING", ), "conditioning2": ("CONDITIONING", ),"mask": ("MASK", ), }
     RETURN_TYPES = ("CONDITIONING", )
@@ -13,7 +13,7 @@ class MergeConditionings(Base):
         c2 = self.apply_mask(conditioning2, 1.0-mask, "default", 1.0)[0]
         return (c1+c2, )
     
-class TwoClipTextEncode(Base):
+class TwoClipTextEncode(Base_custom):
     CATEGORY = "CG/conditioning"
     REQUIRED = {"clip": ("CLIP", {}), "positive": ("STRING", {"default":""}), "negative": ("STRING", {"default":""})}
     RETURN_TYPES = ("CONDITIONING", "CONDITIONING",)
