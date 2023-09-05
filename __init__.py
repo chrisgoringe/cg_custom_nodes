@@ -1,25 +1,19 @@
-import sys, os
+import sys, os, importlib, shutil, re
 sys.path.insert(0,os.path.dirname(os.path.realpath(__file__)))
+from common_custom import module_src_directory
 
-from .src.sizes import *
-from .src.strings import *
-from .src.randoms import *
-from .src.images import *
-from .src.stash import *
-from .src.latents import *
-from .src.dev import *
-from .src.img2txt import *
+NODE_CLASS_MAPPINGS= {}
+NODE_DISPLAY_NAME_MAPPINGS = {}
 
-classes = ["CreatePair","SplitPair","CommonSizes",
-           "RandomFloats", 
-           "CompareImages", "ImageSize", "HardMask", "ResizeImage", "ExactResizeImage", "MergeImages",
-           "MergeLatents", "MergeLatentsSettings",
-           "Loggit", "Stringify", "String", "Substitute", "SimpleLog",
-           "Stash", "UnStash",
-           "TextDescriptionOfImage",
-           ]
-classes.extend(DEV_CLASSES)
+def pretty(name:str):
+    return " ".join(re.findall("[A-Z][a-z]*", name))
 
-NODE_CLASS_MAPPINGS = { c:eval(c) for c in classes }
-NODE_DISPLAY_NAME_MAPPINGS = { c:c for c in classes }
+for module in [os.path.splitext(f)[0] for f in os.listdir(module_src_directory) if f.endswith('.py')]:
+    imported_module = importlib.import_module(f"src.{module}")
+    if 'CLAZZES' in imported_module.__dict__:
+        for clazz in imported_module.CLAZZES:
+            name = clazz.__name__
+            NODE_CLASS_MAPPINGS[name] = clazz
+            NODE_DISPLAY_NAME_MAPPINGS[name] = pretty(name)
+
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']

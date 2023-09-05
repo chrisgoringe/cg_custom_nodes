@@ -1,26 +1,57 @@
-from src.base import Base
+from src.factories import inspect_factory, passthrough_factory
+from src.base import Base_custom
+import random, json
 
-def func(log, input):
-    if log:
-        print(f"{input}")                 
-    return (input,) # This is a good place to put a breakpoint...
+CLAZZES = []
 
-def inspect_factory(name:str, to_inspect:str, display_name:str=None):
-    display_name = display_name or to_inspect
-    clazz_contents = {
-        "CATEGORY" : "CG/dev",
-        "REQUIRED" : { display_name: (to_inspect, {}), "log": (["yes","no"], {}) },
-        "RETURN_TYPES" : (to_inspect,),
-        "RETURN_NAMES" : (display_name,),
-        "OUTPUT_NODE" : True,
-        "func" : lambda *args, **kwargs : func(kwargs['log']=='yes', kwargs[display_name])
-    }
-    clazz = type(name,(Base,),clazz_contents)
-    return clazz
-
-
-Things = ["Clip", "Conditioning", "Float", "Image", "Int", "Latent", "Model", "String", "Vae", ]
+Things = ["Clip", "Conditioning", "Float", "Image", "Int", "Latent", "Mask", "Model", "String", "Vae", ]
 for Thing in Things:
-    globals()[f"Inspect{Thing}"] = inspect_factory(f"Inspect{Thing}", Thing.upper(), Thing)
+    clazz = inspect_factory(f"Inspect{Thing}", Thing.upper(), Thing)
+    globals()[f"Inspect{Thing}"] = clazz
+    CLAZZES.append(clazz)
 
-DEV_CLASSES = [f"Inspect{Thing}" for Thing in Things]
+from nodes import CheckpointLoaderSimple, KSampler, KSamplerAdvanced, LoraLoader
+
+class CheckpointLoaderSelective(CheckpointLoaderSimple):
+    @classmethod
+    def INPUT_TYPES(s):
+        input_types = CheckpointLoaderSimple.INPUT_TYPES()
+        input_types['optional'] = { "name": ("STRING", {"forceInput":True}) }
+        return input_types
+    FUNCTION = "func"
+    category="CG/loaders"
+    def func(self, ckpt_name, name=None, output_vae=True, output_clip=True):
+        return super().load_checkpoint(name or ckpt_name, output_vae, output_clip)
+
+
+CheckpointLoaderPass = passthrough_factory('CheckpointLoaderPass',CheckpointLoaderSelective,
+                                           ("ckpt_name",), 
+                                           ("name",),
+                                           category="CG/loaders")
+CLAZZES.append(CheckpointLoaderPass)
+
+KSamplerPass = passthrough_factory('KSamplerPass', KSampler, 
+                                   ('model', 'positive', 'negative', 'seed',), 
+                                   category="CG/sampling")
+CLAZZES.append(KSamplerPass)
+
+KSamplerAdvancedPass = passthrough_factory('KSamplerAdvancedPass', KSamplerAdvanced, 
+                                           ('model', 'positive', 'negative', 'noise_seed', 'steps', 'end_at_step' ), 
+                                           category="CG/sampling")
+CLAZZES.append(KSamplerAdvancedPass)
+
+LoraLoaderPass = passthrough_factory('LoraLoaderPass', LoraLoader,
+                                     ("lora_name",),
+                                     ("name",),
+                                     category="CG/loaders")
+CLAZZES.append(LoraLoaderPass)
+
+class MakeCombo(Base_custom):
+    CATEGORY = "type_transforms"
+    REQUIRED = { "string": ("STRING", {"default":""}) }
+    RETURN_TYPES = ("euler",)
+    RETURN_NAMES = ("COMBO",)
+    def func(self, string):
+        return( string, )
+    
+CLAZZES.append(MakeCombo)
