@@ -1,5 +1,5 @@
 from src.base import Base_custom
-import os
+import os, random
 
 class Stringify(Base_custom):
     CATEGORY = "CG/strings"
@@ -60,5 +60,6 @@ class SaveDescription(Base_custom):
         text_filepath = os.path.splitext(image_filepath)[0] + ".txt"
         print(description, file=open(file=text_filepath,mode="w"))
         return ()
+
     
 CLAZZES = [String, StringPair, Stringify, SimpleLog, Substitute, Truncate, SaveDescription]

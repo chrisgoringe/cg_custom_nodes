@@ -13,14 +13,5 @@ class MergeConditionings(Base_custom):
         c2 = self.apply_mask(conditioning2, 1.0-mask, "default", 1.0)[0]
         return (c1+c2, )
     
-class TwoClipTextEncode(Base_custom):
-    CATEGORY = "CG/conditioning"
-    REQUIRED = {"clip": ("CLIP", {}), "positive": ("STRING", {"default":""}), "negative": ("STRING", {"default":""})}
-    RETURN_TYPES = ("CONDITIONING", "CONDITIONING",)
-    RETURN_NAMES = ("positive", "negative",)
-    encoder = CLIPTextEncode().encode
 
-    def func(self, clip, positive, negative):
-        return(self.encoder(clip,positive)[0], self.encoder(clip,negative)[0], )
-
-CLAZZES = [MergeConditionings, TwoClipTextEncode]
+CLAZZES = [MergeConditionings]

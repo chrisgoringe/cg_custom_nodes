@@ -46,3 +46,12 @@ LoraLoaderPass = passthrough_factory('LoraLoaderPass', LoraLoader,
                                      category="CG/loaders")
 CLAZZES.append(LoraLoaderPass)
 
+class MakeCombo(Base_custom):
+    CATEGORY = "type_transforms"
+    REQUIRED = { "string": ("STRING", {"default":""}) }
+    RETURN_TYPES = ("euler",)
+    RETURN_NAMES = ("COMBO",)
+    def func(self, string):
+        return( string, )
+    
+CLAZZES.append(MakeCombo)
