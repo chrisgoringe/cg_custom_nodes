@@ -1,4 +1,4 @@
-import sys, os, importlib, shutil, re
+import sys, os, importlib, re
 sys.path.insert(0,os.path.dirname(os.path.realpath(__file__)))
 from common_custom import module_src_directory
 

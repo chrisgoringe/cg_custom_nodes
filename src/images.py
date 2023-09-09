@@ -1,9 +1,5 @@
 import torch
 from src.base import Base_custom
-import math, os, random
-from PIL import Image, ImageDraw, ImageFont, ImageOps
-import numpy as np
-from common_custom import module_resource_directory
 
 def mask_to_image(mask:torch.tensor):
     return mask.reshape((-1, 1, mask.shape[-2], mask.shape[-1])).movedim(1, -1).expand(-1, -1, -1, 3)

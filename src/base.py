@@ -31,9 +31,3 @@ class SeedContext():
             random.seed(self.seed)
     def __exit__(self, exc_type, exc_val, exc_tb):
         random.setstate(self.state)
-
-class classproperty(object):
-    def __init__(self, f):
-        self.f = f
-    def __get__(self, obj, owner):
-        return self.f(owner)
