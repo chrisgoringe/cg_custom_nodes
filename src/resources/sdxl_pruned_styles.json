@@ -40,11 +40,6 @@
         "negative_prompt": "ugly, deformed, noisy, blurry"
     },
     {
-        "name": "ads-automotive",
-        "prompt": "Automotive advertisement style {prompt} . Sleek, dynamic, professional, commercial, vehicle-focused, high-resolution, highly detailed",
-        "negative_prompt": "noisy, blurry, unattractive, sloppy, unprofessional"
-    },
-    {
         "name": "ads-corporate",
         "prompt": "Corporate branding style {prompt} . Professional, clean, modern, sleek, minimalist, business-oriented, highly detailed",
         "negative_prompt": "noisy, blurry, grungy, sloppy, cluttered, disorganized"
@@ -105,16 +100,6 @@
         "negative_prompt": "first-person view, modern, photorealistic"
     },
     {
-        "name": "game-zelda",
-        "prompt": "Legend of Zelda style {prompt} . vibrant, fantasy, detailed, epic, heroic, reminiscent of The Legend of Zelda series",
-        "negative_prompt": "sci-fi, modern, realistic, horror"
-    },
-    {
-        "name": "misc-disco",
-        "prompt": "disco-themed {prompt} . vibrant, groovy, retro 70s style, shiny disco balls, neon lights, dance floor, highly detailed",
-        "negative_prompt": "minimalist, rustic, monochrome, contemporary, simplistic"
-    },
-    {
         "name": "misc-dreamscape",
         "prompt": "dreamscape {prompt} . surreal, ethereal, dreamy, mysterious, fantasy, highly detailed",
         "negative_prompt": "realistic, concrete, ordinary, mundane"
@@ -128,11 +113,6 @@
         "name": "misc-gothic",
         "prompt": "gothic style {prompt} . dark, mysterious, haunting, dramatic, ornate, detailed",
         "negative_prompt": "ugly, deformed, noisy, blurry, low contrast, realism, photorealistic, cheerful, optimistic"
-    },
-    {
-        "name": "misc-kawaii",
-        "prompt": "kawaii style {prompt} . cute, adorable, brightly colored, cheerful, anime influence, highly detailed",
-        "negative_prompt": "dark, scary, realistic, monochrome, abstract"
     },
     {
         "name": "misc-minimalist",
